@@ -1,6 +1,12 @@
 # webuis
 
+<<<<<<< HEAD
 我是小仙女呀,hahlal
+=======
+我是小仙女呀,
+这是一个基础的架构,包含lodash elementUI的引入
+注意,默认打开端口是8081,已禁用js混淆,如需要请自行添加
+>>>>>>> 0c4b3153429676a69c5f5677a39cab53ac190bff
 > A Vue.js project
 
 ## Build Setup

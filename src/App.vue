@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+<<<<<<< HEAD
     <!-- <img src="./assets/logo.png"> -->
     <header class="this_header"></header>
     <article class="this_section">
@@ -252,3 +253,26 @@ export default {
 
 </style>
 
+=======
+    <img src="./assets/logo.png">
+    <router-view/>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'app'
+}
+</script>
+
+<style>
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+</style>
+>>>>>>> 0c4b3153429676a69c5f5677a39cab53ac190bff

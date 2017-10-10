@@ -23,7 +23,11 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
+<<<<<<< HEAD
     port: 8082,
+=======
+    port: 8081,
+>>>>>>> 0c4b3153429676a69c5f5677a39cab53ac190bff
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
