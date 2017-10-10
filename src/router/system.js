@@ -78,7 +78,7 @@ let system=[
 {	path: '/user',					component: user,      				name: '用户管理'},
 {	path: '/informationSystem',		component: informationSystem,       name: '系统字典'},
 {	path: '/informationDepartment',	component: informationDepartment,   name: '科室字典'},
-{	path: '/systemParameters',		component: systemParameters,      	name: '院区管理'},
+{	path: '/systemParameters',		component: systemParameters,      	name: '系统参数'},
 {	path: '/departmentParams',		component: departmentParams,      	name: '科室参数'},
 {	path: '/logs',					component: logs,      				name: '日志管理'},
 ]
