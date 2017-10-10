@@ -9,9 +9,7 @@ import location from '../location/location';
 
 let store=new Vuex.Store({
     state:{
-    	macAddress:'',//mac地址
-    	validateIP:'',//授权地址
-    	validatePort:'',//授权端口
+    	
     	hospitalID:'',//用户登录的院区id
     	departmentID:'',//用户登录时候选取的科室id
     	userMsg:{},//用户信息
