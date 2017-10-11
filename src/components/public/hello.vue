@@ -1,6 +1,6 @@
 <template>
-  <section class="">
-  	3
+  <section class="hello">
+  	
   </section>
 </template>
 <script>
@@ -16,13 +16,15 @@ export default {
   created() {
 
   },
-  mothods: {
+  methods: {
 
   }
 }
 
 </script>
 <style lang='less' scoped>
-
+.hello{
+  
+}
 
 </style>

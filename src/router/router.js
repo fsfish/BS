@@ -1,23 +1,19 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-//系统工作站
-import system from './system.js';
-// //登记工作站
-// import register from './register.js';
-// //诊断工作站
-// import diagnose from './diagnose.js';
-// //统计工作站
-// import statistical from './statistical.js';
-// //诊断工作站
-// import computerRoom from './computerRoom.js';
+//系统管理员
+import sysAdmin from './sysAdmin.js';
+//医院管理员
+import hosAdmin from './hosAdmin.js';
+//医生本人
+import doctor from './doctor.js';
+
 Vue.use(VueRouter);
 
 var routes=[
-	...system,
-	// ...register,
-	// ...diagnose,
-	// ...statistical,
-	// ...computerRoom
+	...sysAdmin,
+	// ...hosAdmin,
+	// ...doctor
+	
 ];
 
 const router = new VueRouter({

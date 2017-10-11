@@ -1,6 +1,6 @@
 <template>
-  <section class="">
-  	2
+  <section class="resetPass">
+  	
   </section>
 </template>
 <script>
@@ -16,13 +16,15 @@ export default {
   created() {
 
   },
-  mothods: {
+  methods: {
 
   }
 }
 
 </script>
 <style lang='less' scoped>
-
+.resetPass{
+  
+}
 
 </style>
