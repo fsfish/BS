@@ -13,11 +13,18 @@
     <section class="header">
       <div class="left"></div>
       <div class="right">
-        <h1>您好,系统管理员</h1>
+        <h1>您好,院区管理员</h1>
         <div class="body">
           <h2>账户余额</h2>
-          <h3>111.33 <span class="pub_count">元</span></h3>
+          <h3><b>111.33</b> <span class="pub_count">元</span> <el-button class="mlem" type="primary">充值</el-button><el-button class="mlem" type="primary">提现</el-button></h3>
+           <div class="two">
+          <div class="jin"><span class='txt'>金币 : </span><b>111.00</b><span class='txt'>分</span>
+           </div>
+           <div class="line"></div>
+           <div class="yin"><span class='txt'>银币 : </span><b>111.00</b><span class='txt'>分</span></div>
         </div>
+        </div>
+        
       </div>
     </section>
     <section class='main'>
@@ -68,8 +75,8 @@ export default {
     margin: 10px 0;
     display: flex;
     .left {
-      width: 250px;
-      height: 250px;
+      width: 150px;
+      height: 150px;
       background: url('../../../assets/images/people.jpg') center center;
       background-size: 100%;
     }
@@ -77,21 +84,69 @@ export default {
       // border:1px solid green;
       display: flex;
       flex-direction: column;
-      justify-content: space-around;
-      color: #333;
+      justify-content:space-around;
+      color: #1F2D3D;
       margin-left: 20px;
       h1 {
-        font-size: 24px;
+        color:#8492A6;
+        font-size: 1.5em;
       }
       h2 {
-        background: url('../../../assets/images/yue.png');
-        font-size: 20px;
+          background: url('../../../assets/images/yue.png') no-repeat;
+          background-size:auto 100% ;
+         color: #C0CCDA;
+        font-size:16px;
+        padding-left: 27px;
       }
       h3 {
-        margin-top: 20px;
-        font-size: 30px;
+        display: flex;
+        align-items:flex-end;
+        padding-left: 27px;
+        b{
+          color: #8492A6;
+          font-size: 30px;
+         margin-bottom: -4px;
+        }
         span {
           font-size: 18px;
+        }
+        .el-button{
+          padding:5px 15px;
+          span{
+            font-size: 5px;
+          }
+        }
+      }
+      .two{
+        // border:1px solid red;
+        margin-top: 10px;
+        display: flex;
+        div{
+          display: flex;
+          align-items:flex-end;
+        }
+        .jin{
+ background: url('../../../assets/images/jin.png') no-repeat;
+          background-size:auto 100% ;
+padding-left: 28px;
+        }
+        .yin{
+           background: url('../../../assets/images/jyin.png') no-repeat;
+          background-size:auto 100% ;
+          padding-left: 28px;
+        }
+        .line{
+          border-left: 1px solid #ddd;
+          margin: 0 1em;
+        }
+        .txt{
+          font-size: 1em;
+           color: #C0CCDA;
+        }
+        b{
+           color:#8492A6;
+          font-size: 20px;
+          margin:0 3px;
         }
       }
     }

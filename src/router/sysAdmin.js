@@ -40,12 +40,6 @@ const balanceMy = resolve => {
   })
 }
 
-//系统管理员->账户管理->修改密码
-const resetPass = resolve => {
-  require.ensure(['../components/public/resetPass.vue'], () => {
-    resolve(require('../components/public/resetPass.vue'))
-  })
-}
 
 //系统管理员->初始页面
 const hello = resolve => {
@@ -61,7 +55,6 @@ let sysAdmin=[
 {	path: '/discountIsSet',			component: discountIsSet,      		name: '医院折扣设置'},
 {	path: '/capitalSubsidiary',		component: capitalSubsidiary,       name: '资金明细'},
 {	path: '/balanceMy',				component: balanceMy,   			name: '我的余额'},
-{	path: '/resetPass',				component: resetPass,      			name: '修改密码'},
 ]
 
 export default sysAdmin;

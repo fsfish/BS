@@ -13,11 +13,18 @@
     <section class="header">
       <div class="left"></div>
       <div class="right">
-        <h1>您好,系统管理员</h1>
+        <h1>您好,院区管理员</h1>
         <div class="body">
           <h2>账户余额</h2>
-          <h3>111.33 <span class="pub_count">元</span></h3>
+          <h3><b>111.33</b> <span class="pub_count">元</span> <el-button class="mlem" type="primary">充值</el-button><el-button class="mlem" type="primary">提现</el-button></h3>
+           <div class="two">
+          <div class="jin"><span class='txt'>金币 : </span><b>111.00</b><span class='txt'>分</span>
+          
+          </div>
+           <div class="yin"><span class='txt'>银币 : </span><b>111.00</b><span class='txt'>分</span></div>
         </div>
+        </div>
+        
       </div>
     </section>
     <section class='main'>
@@ -74,24 +81,47 @@ export default {
       background-size: 100%;
     }
     .right {
-      // border:1px solid green;
+      border:1px solid green;
       display: flex;
       flex-direction: column;
       justify-content: space-around;
-      color: #333;
+      color: #1F2D3D;
       margin-left: 20px;
       h1 {
+        color: #C0CCDA;
         font-size: 24px;
       }
       h2 {
-        background: url('../../../assets/images/yue.png');
+         color: #C0CCDA;
         font-size: 20px;
       }
       h3 {
-        margin-top: 20px;
-        font-size: 30px;
+        display: flex;
+        align-items:flex-end;
+        b{
+          color: #8492A6;
+          font-size: 30px;
+         margin-bottom: -4px;
+        }
         span {
           font-size: 18px;
+        }
+        .el-button{
+          padding:5px 15px;
+          span{
+            font-size: 5px;
+          }
+        }
+      }
+      .two{
+        border:1px solid red;
+        margin-top: 10px;
+        .txt{
+          font-size: 18px;
+        }
+        b{
+          font-size: 20px;
+          margin:0 3px;
         }
       }
     }

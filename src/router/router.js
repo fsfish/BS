@@ -11,8 +11,8 @@ Vue.use(VueRouter);
 
 var routes=[
 	...sysAdmin,
-	// ...hosAdmin,
-	// ...doctor
+	...hosAdmin,
+	...doctor
 	
 ];
 
