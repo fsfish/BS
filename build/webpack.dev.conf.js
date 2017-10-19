@@ -28,7 +28,14 @@ module.exports = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
-      inject: true
+      chunks:['common','app'],
+       inject: 'body'
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'login.html',
+      template: 'login.html',
+      chunks:['common','login'],
+       inject: 'body'
     }),
     new FriendlyErrorsPlugin(),
     new webpack.ProvidePlugin({

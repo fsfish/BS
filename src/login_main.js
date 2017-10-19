@@ -41,9 +41,16 @@ document.getElementsByTagName('html')[0].style.fontSize = win / 10.24 + 'px';
 
 Vue.config.productionTip = false;
 
+//启动应用
+// const app = new Vue({ //eslint-disable-line no-unused-vars
+//   router,
+//   store,
+//   render: h => h(App)
+// }).$mount('#app');
+// 
  // 启动应用
 const app = new Vue({ //eslint-disable-line no-unused-vars
   router,
   store,
-  render: h => h(App)
-}).$mount('#app');
+  render: h => h(login)
+}).$mount('#login');

@@ -13,6 +13,14 @@ let store=new Vuex.Store({
     	hospitalID:'',//用户登录的院区id
     	departmentID:'',//用户登录时候选取的科室id
     	userMsg:{},//用户信息
+        // page:0,//默认页数
+        // pageSize:20,//默认每次发送数据条数
+        pageSizeArr:[10,20,30],//可选择的数据条数
+        regionProps: { //地区树规则
+        value: 'postCode',
+        label: 'name',
+        children: 'list'
+    },
     },
     mutations:{
     	//设置登录院区id
@@ -39,7 +47,7 @@ let store=new Vuex.Store({
     	},
     	//设置用户信息
     	setUserMsg({commit},value){
-    		value=JSON.parse(JSON.stringify(value));
+    		// value=JSON.parse(JSON.stringify(value));
     		commit('setUserMsg',value);
     	}
     }

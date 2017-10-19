@@ -4,15 +4,12 @@
       <el-form ref="form" :model="form" label-width="86px">
         <el-row>
           <el-col>
-            <el-form-item label="院区名称:">
-              <el-select v-model="form.name" placeholder="请选择医院">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
-              </el-select>
+            <el-form-item label="地区名称:" prop="postCode">
+              <el-cascader :props="regionProps" :options="array.obtainOption" v-model="form.postCode" change-on-select placeholder="请选择地区"></el-cascader>
             </el-form-item>
           </el-col>
-          <el-button class="mlem" type="primary">查询</el-button>
-          <el-button class="mlem">重置</el-button>
+          <el-button class="mlem" type="primary" @click='getHospital'>查询</el-button>
+          <el-button class="mlem" @click="resetForm('form','getHospital')">重置</el-button>
         </el-row>
       </el-form>
     </nav>
@@ -24,109 +21,203 @@
         </el-breadcrumb>
       </div>
       <div>
-        <el-button class="mlem" type="primary" @click="createDialog">新建</el-button>
-        <el-button class="mlem">刷新</el-button>
+        <el-button class="mlem" @click="getHospital">刷新</el-button>
         <span class="mlem">
-          检查服务费记录共<font class='pub_count'>0</font>条
+          服务医院共<font class='pub_count'>0</font>家
         </span>
       </div>
     </section>
     <section class='main'>
-      <el-table :data="array.tableData" border height="100">
-        <el-table-column label="操作" prop="name">
+      <el-table :data="array.hostitalOption" border height="100" @row-dblclick='showCurrow'>
+        <el-table-column label="操作" prop="name" width="120">
           <template scope="scope">
             <el-tooltip class="item" effect="dark" content="编辑" placement="top">
-              <el-button icon="edit" class="false" :plain="true" type="success"></el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
-              <el-button size="mini" class="false" :plain="true" type="danger" icon="delete"></el-button>
+              <el-button size="mini" icon="edit" class="false" :plain="true" type="success" @click='showCurrow(scope.row)'></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column label="操作" prop="name"></el-table-column>
-        <el-table-column label="操作" prop="name"></el-table-column>
-        <el-table-column label="操作" prsop="name"></el-table-column>
+        <el-table-column label="院区名称" prop="hospitalName" width="300"></el-table-column>
+        <el-table-column label=""></el-table-column>
       </el-table>
     </section>
     <section class="create">
-      <el-dialog @close="resetForm('navform')" :close-on-click-modal="false" :title="other.title" size="tiny" v-model="alert.new_info">
+      <el-dialog @close="resetForm('navform')"  :close-on-click-modal="false" title="设置服务费" size="tiny" v-model="alert.new_info">
         <el-form class="false" :model="navform" :rules="other.rules" ref="navform" label-width="87px">
-          <el-form-item label="院区名称:">
-            <el-select v-model="navform.name" placeholder="请选择医院">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
-            </el-select>
-          </el-form-item>
-           <el-form-item label="检查项目:">
-            <el-select v-model="navform.name" multiple placeholder="请选择检查项目">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
-            </el-select>
-          </el-form-item>
-           <el-form-item label="服务类型:">
-            <el-select v-model="navform.name" multiple placeholder="请选择检查种类">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="服务费:" prop="conAgentName">
-            <el-input placeholder="请输入服务费(1~100元)" v-model="navform.conAgentName">
+          <el-form-item label="服务费:" prop="price">
+            <el-input placeholder="请输入服务费(1~100元)" v-model="navform.price">
             </el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button class="mlem false" :plain="true" type="primary" @click="alert.new_info=false">取 消</el-button>
-          <el-button class="mlem false" type="primary" @click="submitForm('navform','saveNewInfo')">保存并新建</el-button>
-          <el-button class="mlem false" type="primary" @click="submitForm('navform','saveNewInfo','newinfo')">保存</el-button>
+          <el-button class="mlem false" type="primary" @click="submitForm('navform','saveNewInfo','new_info')">保存</el-button>
+        </div>
+      </el-dialog>
+    </section>
+    <section class="createHos">
+      <el-dialog @close="resetObj" :close-on-click-modal="false" :title="other.title" v-model="alert.createServe">
+        <el-form ref="hosForm" :model="hosForm" label-width="86px">
+          <el-row>
+            <el-col>
+              <el-form-item label="检查类型:" prop="examineType">
+                <el-select v-model="hosForm.examineType" multiple placeholder="请选择检查类型">
+                  <el-option v-for="item,index in array.checkOption" :key='index' :value='item.examineType' :label='item.examineType'></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-button class="mlem" type="primary" @click='queryData(1)'>查询</el-button>
+            <el-button class="mlem" @click="resetForm('hosForm','queryData')">重置</el-button>
+          </el-row>
+        </el-form>
+        <el-row class='hr'>
+          <div>项目列表(
+            <font class='pub_count'>{{other.count}}</font>)</div>
+        </el-row>
+        <el-table :data="array.tableData" border height="100" @row-dblclick='edit'>
+          <el-table-column label="操作" prop="name">
+            <template scope="scope">
+              <el-tooltip class="item" effect="dark" content="编辑" placement="top">
+                <el-button size="mini" icon="edit" class="false" :plain="true" type="success" @click='edit(scope.row)'></el-button>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column label="检查类型" prop="examineType"></el-table-column>
+          <el-table-column label="检查项目" prop="examineItem"></el-table-column>
+          <el-table-column label="服务费" >
+            <template scope="scope">
+              <span>{{scope.row.price}}元</span>
+            </template>
+          </el-table-column>
+        </el-table>
+        <section class="pub_footer">
+          <el-pagination @size-change="(el)=>{queryData(1,el)}" @current-change="(el)=>{queryData(el)}" :current-page="other.page" :page-size="other.pageSize" :page-sizes="pageSizeArr" layout="total, sizes, prev, pager, next, jumper" :total="other.count">
+          </el-pagination>
+        </section>
+        <div slot="footer" class="dialog-footer">
+          <el-button class="mlem false" :plain="true" type="primary" @click="alert.createServe=false">关 闭</el-button>
         </div>
       </el-dialog>
     </section>
   </section>
 </template>
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
-      form: {
+      form: { //菜单栏
+        postCode: [] //获取邮编
 
       },
       navform: { //弹窗数据
 
       },
+      hosForm: { //医院对象
+        hospitalID:'',//院区id
+        examineType: [], //获取检查类型
+      },
       array: {
         tableData: [], //表格数据
+        obtainOption: [], //地区树形
+        hostitalOption: [], //根据院区获取所有医院
+        checkOption: [], //获取所有检查类型
       },
       alert: {
-        new_info: false, //新建弹窗
+        new_info: false, //新建服务弹窗
+        createServe: false, //新建服务院区弹窗
       },
       other: {
-        title: "新增检查服务费",
+        page: 1,
+        pageSize: 10,
+        count: 0, //默认所有的检查项目的条数
         rules: {},
       }
     }
   },
   computed: {
-
+    ...mapState([
+      'pageSizeArr',
+      'regionProps'
+    ])
   },
   created() {
-
+    this.getObtain();
+    this.getHospital();
+    this.getCheckType();
   },
   methods: {
-    //获取数据
-    queryData() {
-
+    //获取所有地区
+    getObtain() {
+      this.get('paygetHospitalAreaTree').then(data => {
+        this.array.obtainOption = _.get(data, 'data.data', []);
+      })
     },
-    //新建弹窗
-    createDialog() {
-      this.alert.new_info = true;
+    //根据地区获取医院
+    getHospital() {
+      this.get('paygetHospitals', {
+        params: {
+          postCode: _.last(this.form.postCode) || ''
+        }
+      }).then(data => {
+        console.log(data)
+        this.array.hostitalOption = _.get(data, 'data.data', []);
+      })
+    },
+    //获取检查类型
+    getCheckType() {
+      this.get('paygetPlaExamineType').then(data => {
+        console.log(data)
+        this.array.checkOption = _.get(data, 'data', []);
+      })
+    },
+    //双击编辑显示当前行内容
+    showCurrow(val) {
+      console.log(val);
+      this.other.title = `编辑${val.hospitalName}`
+      this.hosForm.hospitalID =val.id;
+      this.alert.createServe = true;
+      this.queryData();
+    },
+    //获取所有收费项目
+    queryData(page=1,pageSize=this.other.pageSize) {
+      this.get('paygetExamineItemList', {
+        params: {
+          ...this.hosForm,
+          page:page-1,
+          pageSize: pageSize,
+        }
+      }).then(data => {
+        console.log(data);
+        this.other.page=page;
+        this.other.pageSize = pageSize;
+        this.other.count = _.get(data, 'data.count', 0);
+        this.array.tableData = _.get(data, 'data.data', []);
+      })
+    },
+    //关闭弹窗,清空该医院的对象
+    resetObj(){
+      this.resetForm('hosForm');
+      this.other.pageSize=10;
+    },
+    //编辑项目服务费
+    edit(val){
+      this.alert.new_info=true;
+      this.navform=this.copy(val);
     },
     //保存弹窗数据
-    saveNewInfo() {
-
+    saveNewInfo(resolve) {
+       this.post('payupdateExamineItem',[this.navform]).then(data => {
+        console.log(data);
+         this.$message({
+          message: data.message,
+          type: 'success'
+        });
+         resolve();
+         this.queryData(1);
+      })
     }
   }
 }
-
 </script>
 <style lang='less'>
 @import '../../../assets/css/mixin.less';
@@ -147,17 +238,61 @@ export default {
   .create {
 
     .el-dialog {
-      height: 370px;
-      .pub_margintop(370px);
+      height: 200px;
+      .pub_margintop(200px);
       .el-select,
       .el-input {
         width: 300px;
       }
-      .el-dialog__body{
-        padding: 20px;
+      .el-dialog__body {
+        padding-bottom: 10px;
       }
-      .el-dialog__footer{
+      .el-dialog__footer {
         padding-top: 0px;
+      }
+      .dialog-footer {
+        text-align: center;
+      }
+    }
+  }
+  .createHos {
+    .el-dialog {
+      width: 700px;
+      height: 500px;
+      display: flex;
+      flex-direction: column;
+      .pub_margintop(500px);
+      .el-dialog__body {
+        padding-bottom: 10px;
+        flex-grow: 1;
+        border: 1px solid red;
+        display: flex;
+        flex-direction: column;
+        .el-row:not(.hr) {
+          display: flex;
+          .el-col {
+            max-width: 280px;
+            .el-form-item {
+              margin-bottom: 5px;
+            }
+          }
+          .el-button {
+            height: 36px;
+          }
+          border-bottom: 1px solid #ccc;
+        }
+        .hr {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          .crbtn {
+            padding: 3px 9px;
+          }
+          padding:10px 3px;
+        }
+        .el-table {
+          flex-grow: 1;
+        }
       }
       .dialog-footer {
         text-align: center;

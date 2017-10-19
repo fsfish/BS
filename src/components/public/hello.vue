@@ -1,5 +1,5 @@
 <template>
-  <section class="hello">
+  <section class="">
   	
   </section>
 </template>
@@ -23,8 +23,6 @@ export default {
 
 </script>
 <style lang='less' scoped>
-.hello{
-  
-}
+
 
 </style>

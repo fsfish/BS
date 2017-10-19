@@ -9,7 +9,7 @@
       <div class="elmenu">
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
-            {{other.user}}<i class="el-icon-caret-bottom el-icon--right"></i>
+            {{user.username}}<i class="el-icon-caret-bottom el-icon--right"></i>
           </span>
           <!--  <span class="el-dropdown-link">
             院区管理员<i class="el-icon-caret-bottom el-icon--right"></i>
@@ -30,16 +30,12 @@
       <nav class="this_nav">
         <el-button type="text" class="el-icon-menu this_spread" @click="isCollapse=!isCollapse"></el-button>
         <!-- 系统管理员 -->
-        <el-menu :router="true" :unique-opened="true" class="el-menu-vertical-demo" @open="handleOpen" :collapse="isCollapse" v-if="other.user=='系统管理员'">
+        <el-menu :router="true" :unique-opened="true" class="el-menu-vertical-demo" @open="handleOpen" :collapse="isCollapse" v-if="user.category==0">
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-setting"></i>
               <span slot="title">系统设置</span>
             </template>
-            <el-menu-item index="/plugin">
-              <i class="el-icon-menu"></i>
-              <span slot="title">插件管理</span>
-            </el-menu-item>
             <el-menu-item index="/checkPrice">
               <i class="el-icon-menu"></i>
               <span slot="title">检查服务费</span>
@@ -75,7 +71,7 @@
           </el-submenu>
         </el-menu>
         <!-- 院区管理员 -->
-        <el-menu :router="true" :unique-opened="true" class="el-menu-vertical-demo" @open="handleOpen" :collapse="isCollapse" v-if="other.user=='院区管理员'">
+        <el-menu :router="true" :unique-opened="true" class="el-menu-vertical-demo" @open="handleOpen" :collapse="isCollapse" v-if="user.category==1">
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-setting"></i>
@@ -112,7 +108,7 @@
           </el-submenu>
         </el-menu>
         <!-- 医生本人 -->
-        <el-menu :router="true" :unique-opened="true" class="el-menu-vertical-demo" @open="handleOpen" :collapse="isCollapse" v-if="other.user=='哈医生'">
+        <el-menu :router="true" :unique-opened="true" class="el-menu-vertical-demo" @open="handleOpen" :collapse="isCollapse" v-if="user.category==2">
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-message"></i>
@@ -161,14 +157,15 @@
   </div>
 </template>
 <script>
+import { mapState,mapActions } from "vuex";
 export default {
   name: 'app',
   data() {
     return {
       isCollapse: true,
-      other: {
-        user: "哈医生",
-      },
+        user:{
+
+        },
       alert: {
         resetPass: false, //修改密码
       },
@@ -177,13 +174,33 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState([
+        "userMsg"
+      ])
+  },
   created() {
-
+        this.login();
   },
   methods: {
     handleOpen(key, keyPath) {
       // console.log(key, keyPath);
     },
+    //登录
+    login() {
+
+       let storage=window.localStorage;
+      this.get('paylogin', {params:{
+          username:storage.username,
+          password:storage.password,
+          }}).then(data => {
+            // console.log(_.get(data,'data',{}))
+            this.user=this.copy(_.get(data,'data',{}));
+            this.$set(this.user,data.data);
+        this.$store.dispatch("setUserMsg",_.get(data,'data',{}));
+            })
+    },
+   
     //退出登录
     loginout() {
 
