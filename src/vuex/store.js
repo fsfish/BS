@@ -16,6 +16,7 @@ let store=new Vuex.Store({
         // page:0,//默认页数
         // pageSize:20,//默认每次发送数据条数
         pageSizeArr:[10,20,30],//可选择的数据条数
+        consumption:['收益','消费','冻结'],//0：收益  1:消费  2：冻结  所有消费类型
         regionProps: { //地区树规则
         value: 'postCode',
         label: 'name',

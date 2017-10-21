@@ -35,14 +35,16 @@
   </section>
 </template>
 <script>
-import { mapState,mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
-  name:'login',
+  name: 'login',
   data() {
     return {
       form: {
-        username: 'admin',
-        password: '888888'
+        username: '',
+        password: ''
+        // username: 'admin',
+        // password: '888888'
       },
       rules: {
         username: [{
@@ -59,36 +61,43 @@ export default {
     }
   },
   computed: {
-  ...mapState([
-        "userMsg"
-      ])
+    ...mapState([
+      "userMsg"
+    ])
   },
   created() {
-      console.log(this.userMsg)
+    var storage = window.localStorage;
+    if(storage["username"]){
+      this.form.username= storage["username"];
+    }
   },
   methods: {
     //登录
     login() {
-      this.get('paylogin', {params:this.form}).then(data => {
+      this.get('paylogin', { params: this.form }).then(data => {
+        // console.log(data)
+        if (data.httpCode == 'OK') {
           this.$message({
-          message: data.message,
-          type: 'success'
-        });
-      this.$store.dispatch("setUserMsg",_.get(data,'data',{}));
-      if(!window.localStorage){
+            message: data.message,
+            type: 'success'
+          });
+          this.$store.dispatch("setUserMsg", _.get(data, 'data', {}));
+          if (!window.localStorage) {
             alert("浏览器需要支持本地存储");
             return false;
-        }else{
-            var storage=window.localStorage;
-            storage["username"]=this.form.username;
-            storage["password"]=this.form.password;
+          } else {
+            var storage = window.localStorage;
+            storage["username"] = this.form.username;
+            storage["password"] = this.form.password;
+            storage["category"] =data.data.category;
+          }
+          setTimeout(() => {
+            self.location = 'index.html';
+          }, 2000)
         }
-      setTimeout(()=>{
-      self.location='index.html'; 
-    },2000)
       })
     },
-   
+
     handleSelect() {
 
     }

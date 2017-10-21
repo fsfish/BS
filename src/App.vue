@@ -9,7 +9,7 @@
       <div class="elmenu">
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
-            {{user.username}}<i class="el-icon-caret-bottom el-icon--right"></i>
+            {{user.fullname}}<i class="el-icon-caret-bottom el-icon--right"></i>
           </span>
           <!--  <span class="el-dropdown-link">
             院区管理员<i class="el-icon-caret-bottom el-icon--right"></i>
@@ -21,51 +21,48 @@
             <el-dropdown-item>
               <el-button type="text" @click="alert.resetPass=true">修改密码</el-button>
             </el-dropdown-item>
-            <el-dropdown-item @click="loginout">退出</el-dropdown-item>
+            <el-dropdown-item @click="loginout" >
+              <el-button type="text" @click='loginout'>退出</el-button>
+            </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
     </header>
     <article class="this_section">
       <nav class="this_nav">
-        <el-button type="text" class="el-icon-menu this_spread" @click="isCollapse=!isCollapse"></el-button>
+        <el-button type="text" class="icon iconfont icon-zhankai" @click="isCollapse=!isCollapse"></el-button>
         <!-- 系统管理员 -->
         <el-menu :router="true" :unique-opened="true" class="el-menu-vertical-demo" @open="handleOpen" :collapse="isCollapse" v-if="user.category==0">
           <el-submenu index="1">
             <template slot="title">
-              <i class="el-icon-setting"></i>
+              <i class="icon iconfont icon-set"></i>
               <span slot="title">系统设置</span>
             </template>
             <el-menu-item index="/checkPrice">
-              <i class="el-icon-menu"></i>
               <span slot="title">检查服务费</span>
             </el-menu-item>
             <el-menu-item index="/discountIsSet">
-              <i class="el-icon-menu"></i>
               <span slot="title">医院折扣设置</span>
             </el-menu-item>
             <el-menu-item index="/payRecords">
-              <i class="el-icon-menu"></i>
               <span slot="title">医院充值记录</span>
             </el-menu-item>
           </el-submenu>
           <el-submenu index="2">
             <template slot="title">
-              <i class="el-icon-message"></i>
+              <i class="icon iconfont icon-caiwujichushezhi"></i>
               <span slot="title">财务设置</span>
             </template>
             <el-menu-item index="/capitalSubsidiary">
-              <i class="el-icon-menu"></i>
               <span slot="title">资金明细</span>
             </el-menu-item>
           </el-submenu>
           <el-submenu index="3">
             <template slot="title">
-              <i class="el-icon-message"></i>
+              <i class="icon iconfont icon-zhanghushezhi"></i>
               <span slot="title">账户设置</span>
             </template>
             <el-menu-item index="/balanceMy">
-              <i class="el-icon-menu"></i>
               <span slot="title">我的余额</span>
             </el-menu-item>
           </el-submenu>
@@ -74,35 +71,31 @@
         <el-menu :router="true" :unique-opened="true" class="el-menu-vertical-demo" @open="handleOpen" :collapse="isCollapse" v-if="user.category==1">
           <el-submenu index="1">
             <template slot="title">
-              <i class="el-icon-setting"></i>
+              <i class="icon iconfont icon-set"></i>
               <span slot="title">系统设置</span>
             </template>
-            <el-menu-item index="/hosCheckProjectPrice">
-              <i class="el-icon-menu"></i>
+            <el-menu-item index="/checkProjectPrice">
               <span slot="title">项目价格设置</span>
             </el-menu-item>
             <el-menu-item index="/hosDiscount">
-              <i class="el-icon-menu"></i>
               <span slot="title">医院折扣设置</span>
             </el-menu-item>
           </el-submenu>
           <el-submenu index="2">
             <template slot="title">
-              <i class="el-icon-message"></i>
+             <i class="icon iconfont icon-caiwujichushezhi"></i>
               <span slot="title">财务设置</span>
             </template>
             <el-menu-item index="/hosCapitalSubsidiary">
-              <i class="el-icon-menu"></i>
               <span slot="title">资金明细</span>
             </el-menu-item>
           </el-submenu>
           <el-submenu index="3">
             <template slot="title">
-              <i class="el-icon-message"></i>
+             <i class="icon iconfont icon-zhanghushezhi"></i>
               <span slot="title">账户设置</span>
             </template>
             <el-menu-item index="/hosBalanceMy">
-              <i class="el-icon-menu"></i>
               <span slot="title">我的余额</span>
             </el-menu-item>
           </el-submenu>
@@ -111,21 +104,19 @@
         <el-menu :router="true" :unique-opened="true" class="el-menu-vertical-demo" @open="handleOpen" :collapse="isCollapse" v-if="user.category==2">
           <el-submenu index="1">
             <template slot="title">
-              <i class="el-icon-message"></i>
+             <i class="icon iconfont icon-caiwujichushezhi"></i>
               <span slot="title">财务设置</span>
             </template>
             <el-menu-item index="/docCapitalSubsidiary">
-              <i class="el-icon-menu"></i>
               <span slot="title">资金明细</span>
             </el-menu-item>
           </el-submenu>
           <el-submenu index="2">
             <template slot="title">
-              <i class="el-icon-message"></i>
+             <i class="icon iconfont icon-zhanghushezhi"></i>
               <span slot="title">账户设置</span>
             </template>
             <el-menu-item index="/docBalanceMy">
-              <i class="el-icon-menu"></i>
               <span slot="title">我的余额</span>
             </el-menu-item>
           </el-submenu>
@@ -138,19 +129,16 @@
     <section class="resetPass">
       <el-dialog @close="resetForm('navform')" title="修改密码" size="tiny" v-model="alert.resetPass">
         <el-form class="false" :model="navform" ref="navform" label-width="87px">
-          <el-form-item label="旧密码:">
-            <el-input placeholder="请输入旧密码" v-model="navform.conAgentName"></el-input>
+          <el-form-item label="旧密码:" prop="oldPassword">
+            <el-input placeholder="请输入旧密码" v-model="navform.oldPassword"></el-input>
           </el-form-item>
-          <el-form-item label="新密码:">
-            <el-input placeholder="请输入新密码" v-model="navform.conAgentName"></el-input>
-          </el-form-item>
-          <el-form-item label="确认密码:">
-            <el-input placeholder="请输入新密码" v-model="navform.conAgentName"></el-input>
+          <el-form-item label="新密码:" prop="newPassword">
+            <el-input placeholder="请输入新密码" v-model="navform.newPassword"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button class="mlem false" :plain="true" type="primary" @click="alert.resetPass=false">取 消</el-button>
-          <el-button class="mlem false" type="primary" @click="submitForm('navform','saveNewInfo','newinfo')">保存</el-button>
+          <el-button class="mlem false" type="primary" @click="submitForm('navform','resetpass','resetPass')">保存</el-button>
         </div>
       </el-dialog>
     </section>
@@ -170,7 +158,8 @@ export default {
         resetPass: false, //修改密码
       },
       navform: {
-
+        oldPassword:'',
+        newPassword:''
       }
     }
   },
@@ -194,16 +183,60 @@ export default {
           username:storage.username,
           password:storage.password,
           }}).then(data => {
-            // console.log(_.get(data,'data',{}))
             this.user=this.copy(_.get(data,'data',{}));
             this.$set(this.user,data.data);
-        this.$store.dispatch("setUserMsg",_.get(data,'data',{}));
+            this.$store.dispatch("setUserMsg",_.get(data,'data',{}));
             })
+          //  this.get('paylogin', {params:{
+          // username:'zhang',
+          // password:'888888',
+          // }}).then(data => {
+          //   // this.$router.go('');
+          //   console.log(data)
+          //   data.data=this.copy(_.get(data,'data',{}));
+          //   this.$set(data.data,data.data);
+          //   this.$store.dispatch("setUserMsg",_.get(data,'data',{}));
+          //   })
+        
     },
-   
     //退出登录
     loginout() {
-
+          this.get('paylogout').then(data => {
+            console.log(data);
+             if (data.httpCode == 'OK') {
+          this.$message({
+            message: data.message,
+            type: 'success'
+          });
+          this.$store.dispatch("setUserMsg",{});
+          setTimeout(() => {
+            self.location = 'login.html';
+          }, 2000)
+        }
+      // self.location='./login.html'; 
+            })
+    },
+    //修改密码
+    resetpass(resolve){
+this.get('payupdatePassword',{
+  params:{
+    ...this.navform,
+    id:this.user.id
+  }
+}).then(data => {
+            console.log(data);
+            resolve();
+      if (data.httpCode == 'OK') {
+          this.$message({
+            message: data.message,
+            type: 'success'
+          });
+          this.$store.dispatch("setUserMsg",{});
+          setTimeout(() => {
+            self.location = 'login.html';
+          }, 1000)
+        }
+            })
     }
   }
 
@@ -212,7 +245,6 @@ export default {
 </script>
 <style lang="less">
 @import './assets/css/mixin.less';
-
 #app {
   width: 100%;
   height: 100%;
@@ -221,7 +253,6 @@ export default {
   .this_header {
     height: 80px;
     width: 100%;
-    border: 1px solid red;
     background: #009933;
     display: flex;
     justify-content: space-between;
@@ -229,7 +260,6 @@ export default {
     padding: 0 6px;
     .left {
       display: flex;
-      border: 1px solid red;
       align-items: center;
       .txt {
         font-size: 30px;
@@ -248,11 +278,11 @@ export default {
       .el-dropdown-link {
         color: #fff;
       }
-      .el-dropdown-menu {
-        min-width: 75px;
-      }
+      
+      
     }
   }
+
   .this_section {
     width: 100%;
     height: 100%;
@@ -263,6 +293,16 @@ export default {
       display: flex;
       flex-direction: column;
       background: #eef1f6;
+      .iconfont{
+        font-size: 1.1em;
+      }
+      .icon-zhankai{
+        font-weight: 600;
+        font-size: 1.5em;
+      }
+      .icon-zhanghushezhi{
+        font-size: 1.3em;
+      }
       .this_spread {
         width: 100%;
         background: #eef1f6;
@@ -282,15 +322,16 @@ export default {
       .view {
         width: 100%;
         height: 100%;
-        border: 1px solid red;
       }
     }
-    border:1px solid blue;
   }
   .resetPass {
     .el-dialog {
-      height: 344px;
-      .pub_margintop(344px);
+      height: 260px;
+      .pub_margintop(260px);
+      .el-dialog__body{
+        padding-bottom:10px;
+      }
       .el-input {
         width: 300px;
       }
@@ -300,5 +341,11 @@ export default {
     }
   }
 }
-
+.el-dropdown-menu {
+  right: 6px;
+        max-width: 75px;
+        .el-button--text{
+        color:#333 !important;
+      }
+      }
 </style>

@@ -21,9 +21,9 @@ const hosCapitalSubsidiary = resolve => {
 }
 
 //院区管理员->账户管理->我的余额
-const balanceMy = resolve => {
-  require.ensure(['../components/hosAdmin/account/balanceMy.vue'], () => {
-    resolve(require('../components/hosAdmin/account/balanceMy.vue'))
+const hosBalanceMy = resolve => {
+  require.ensure(['../components/hosAdmin/account/hosBalanceMy.vue'], () => {
+    resolve(require('../components/hosAdmin/account/hosBalanceMy.vue'))
   })
 }
 //院区管理员->初始页面
@@ -33,11 +33,11 @@ const hello = resolve => {
   })
 }
 let hosAdmin = [
-  { path: '/', component: hello },
-  { path: '/hosCheckProjectPrice', component: checkProjectPrice },//项目检查价格设置
+  // { path: '/', component: hello },
+  { path: '/checkProjectPrice', component: checkProjectPrice },//项目检查价格设置
   { path: '/hosDiscount', component: discount }, //医院折扣设置
   { path: '/hosCapitalSubsidiary', component: hosCapitalSubsidiary },//资金明细
-  { path: '/hosBalanceMy', component: balanceMy },//我的余额
+  { path: '/hosBalanceMy', component: hosBalanceMy },//我的余额
 ]
 
 export default hosAdmin;

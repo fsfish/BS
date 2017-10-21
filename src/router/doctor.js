@@ -8,9 +8,9 @@ const docCapitalSubsidiary = resolve => {
 }
 
 //医生本人->账户管理->我的余额
-const balanceMy = resolve => {
-  require.ensure(['../components/doctor/account/balanceMy.vue'], () => {
-    resolve(require('../components/doctor/account/balanceMy.vue'))
+const docBalanceMy = resolve => {
+  require.ensure(['../components/doctor/account/docBalanceMy.vue'], () => {
+    resolve(require('../components/doctor/account/docBalanceMy.vue'))
   })
 }
 
@@ -22,9 +22,9 @@ const hello = resolve => {
   })
 }
 let doctor = [
-  { path: '/', component: hello },
+  // { path: '/', component: hello },
   { path: '/docCapitalSubsidiary', component: docCapitalSubsidiary },//资金明细
-  { path: '/docBalanceMy', component: balanceMy },//我的余额
+  { path: '/docBalanceMy', component: docBalanceMy },//我的余额
 ]
 
 export default doctor;

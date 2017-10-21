@@ -48,7 +48,7 @@ const hello = resolve => {
   })
 }
 let sysAdmin=[
-{	path: '/',						component: hello 	          					   },
+// {path: '/',       component: hello,  },
 {	path: '/payRecords',  			component: payRecords,        		name: '充值记录'},
 {	path: '/plugin',				component: plugin,    				name: '插件管理'},
 {	path: '/checkPrice',			component: checkPrice,      		name: '检查节点佣金'},

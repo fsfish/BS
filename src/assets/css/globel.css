@@ -35,7 +35,6 @@
 }
 .pub_hr {
   width: 100%;
-  border: 1px solid red;
   padding: 7px;
   display: flex;
   justify-content: space-between;
@@ -45,7 +44,6 @@
   align-items: center;
 }
 .pub_footer {
-  border: 1px solid red;
   display: flex;
   justify-content: flex-end;
   padding: 7px;

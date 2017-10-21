@@ -42,9 +42,17 @@
     </section>
     <section class="create">
       <el-dialog @close="resetForm('navform')"  :close-on-click-modal="false" title="设置服务费" size="tiny" v-model="alert.new_info">
-        <el-form class="false" :model="navform" :rules="other.rules" ref="navform" label-width="87px">
-          <el-form-item label="服务费:" prop="price">
-            <el-input placeholder="请输入服务费(1~100元)" v-model="navform.price">
+        <el-form class="false" :model="navform" :rules="other.rules" ref="navform" label-width="130px">
+          <el-form-item label="基础服务费:" prop="servicePrice">
+            <el-input placeholder="请输入基础服务费(0~100元)" v-model="navform.servicePrice">
+            </el-input>
+          </el-form-item>
+            <el-form-item label="远程书写服务费:" prop="remoteWritePrice">
+            <el-input placeholder="请输入远程书写服务费(0~100元)" v-model="navform.remoteWritePrice">
+            </el-input>
+          </el-form-item>
+          <el-form-item label="远程审核服务费:" prop="remoteAuditPrice">
+            <el-input placeholder="请输入远程审核服务费(0~100元)" v-model="navform.remoteAuditPrice">
             </el-input>
           </el-form-item>
         </el-form>
@@ -83,9 +91,19 @@
           </el-table-column>
           <el-table-column label="检查类型" prop="examineType"></el-table-column>
           <el-table-column label="检查项目" prop="examineItem"></el-table-column>
-          <el-table-column label="服务费" >
+          <el-table-column label="基础服务费" >
             <template scope="scope">
-              <span>{{scope.row.price}}元</span>
+              <span>{{scope.row.servicePrice}}元</span>
+            </template>
+          </el-table-column>
+           <el-table-column label="远程书写服务费" >
+            <template scope="scope">
+              <span>{{scope.row.remoteWritePrice}}元</span>
+            </template>
+          </el-table-column>
+           <el-table-column label="远程审核服务费" >
+            <template scope="scope">
+              <span>{{scope.row.remoteAuditPrice}}元</span>
             </template>
           </el-table-column>
         </el-table>
@@ -130,7 +148,44 @@ export default {
         page: 1,
         pageSize: 10,
         count: 0, //默认所有的检查项目的条数
-        rules: {},
+        rules: {
+          servicePrice: [{ 
+                    required: true,
+                    message: '请输入基础服务费(0~100元)',
+                    trigger: 'blur',
+                    validator: (rule, value, callback) => {
+                        if (value == '') {
+                            callback(new Error());
+                        } else {
+                            callback();
+                        }
+                    }
+                }],
+          remoteWritePrice: [{
+                    required: true,
+                    message: '请输入远程书写服务费(0~100元)',
+                    trigger: 'blur',
+                    validator: (rule, value, callback) => {
+                        if (value == '') {
+                            callback(new Error());
+                        } else {
+                            callback();
+                        }
+                    }
+                }],
+         remoteAuditPrice: [{
+                    required: true,
+                    message: '请输入远程审核服务费(0~100元)',
+                    trigger: 'blur',
+                    validator: (rule, value, callback) => {
+                        if (value == '') {
+                            callback(new Error());
+                        } else {
+                            callback();
+                        }
+                    }
+                }],
+        },
       }
     }
   },
@@ -206,7 +261,7 @@ export default {
     },
     //保存弹窗数据
     saveNewInfo(resolve) {
-       this.post('payupdateExamineItem',[this.navform]).then(data => {
+       this.post('payupdateExamineItem',this.navform).then(data => {
         console.log(data);
          this.$message({
           message: data.message,
@@ -230,7 +285,6 @@ export default {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    border: 1px solid green;
     .el-table {
       flex-grow: 1;
     }
@@ -238,8 +292,8 @@ export default {
   .create {
 
     .el-dialog {
-      height: 200px;
-      .pub_margintop(200px);
+      height: 320px;
+      .pub_margintop(320px);
       .el-select,
       .el-input {
         width: 300px;
@@ -265,7 +319,6 @@ export default {
       .el-dialog__body {
         padding-bottom: 10px;
         flex-grow: 1;
-        border: 1px solid red;
         display: flex;
         flex-direction: column;
         .el-row:not(.hr) {

@@ -162,6 +162,10 @@ Vue.mixin({
         // })
       });
     },
+    // 将时间戳转换成 yyyy-mm-dd形式
+    formatDate(time){
+     return  new Date(time).toLocaleString(); 
+    },
     // 处理时间,转换成时间戳,can 时间日期,type存在 则为结束时间
     formatTime(can, type) {
       if (type) {

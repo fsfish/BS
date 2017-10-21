@@ -1,5 +1,5 @@
 <template>
-  <section class="balanceMy">
+  <section class="docBalanceMy">
     <section class="pub_hr">
       <div>
         <el-breadcrumb>
@@ -16,7 +16,13 @@
         <h1>您好,<span class="pub_count">{{other.user}}</span></h1>
         <div class="body">
           <h2>账户余额</h2>
-          <h3><b>{{toThousands(other.price)}}</b> <span class="pub_count">元</span></h3>
+          <h3><b>{{toThousands(other.price)}}</b>  <span class="pub_count">元</span> <el-button class="mlem" type="primary" disabled>充值</el-button><el-button class="mlem" type="primary" disabled>提现</el-button></h3>
+          <div class="two">
+            <div class="jin"><span class='txt'>金币 : </span><b>{{toThousands(this.other.currentBalanceA)}}</b><span class='txt'>分</span>
+            </div>
+            <div class="line"></div>
+            <div class="yin"><span class='txt'>银币 : </span><b>{{toThousands(this.other.currentBalanceB)}}</b><span class='txt'>分</span></div>
+          </div>
         </div>
       </div>
     </section>
@@ -24,26 +30,20 @@
       <el-tabs v-model="activeName">
         <el-tab-pane label="最近交易记录" name="first">
           <el-table :data="array.tableData" border height="100">
-            <el-table-column label="账户名称" prop="accountName" width="180" show-overflow-tooltip></el-table-column>
-            <el-table-column label="账户类型" prop="name">
-              <template scope="scope">
-                <span>{{['个人','医院'][scope.row.accountType]}}</span>
-              </template>
-            </el-table-column>
             <el-table-column label="消费种类" prop="orderName"></el-table-column>
             <el-table-column label="消费金额" prop="orderAmount">
               <template scope="scope">
-                <span>{{toThousands(scope.row.orderAmount)}}元</span>
+                <span>{{ toThousands(scope.row.orderAmount)}}元</span>
               </template>
             </el-table-column>
-            <el-table-column label="消费时间" prop="startTime" width="230" show-overflow-tooltip>
+            <el-table-column label="消费时间" prop="startTime" width="200" show-overflow-tooltip>
               <template scope="scope">
                 <span>{{formatDate(scope.row.startTime)}}</span>
               </template>
             </el-table-column>
             <el-table-column label="账户余额" prop="currentBalanceA">
               <template scope="scope">
-                <span>{{toThousands(scope.row.currentBalanceA+scope.row.currentBalanceB)}}元</span>
+                <span>{{ toThousands(scope.row.currentBalanceA+scope.row.currentBalanceB)}}元</span>
               </template>
             </el-table-column>
           </el-table>
@@ -70,42 +70,43 @@ export default {
         page: 1,
         pageSize: 20,
         count: 0, //默认所有的检查项目的条数
-        price: 0
+        price: 0,
+        currentBalanceA:0,//金币
+        currentBalanceB:0,//银币
       }
     }
   },
   computed: {
-    ...mapState([
+      ...mapState([
       'pageSizeArr',
       'userMsg'
     ])
   },
   created() {
-    this.$set(this.other, 'user', this.userMsg.fullname);
+      this.$set(this.other, 'user', this.userMsg.fullname);
     this.accountBalance();
     this.queryData(1);
   },
   methods: {
-    handleClick(tab, event) {
-      console.log(tab, event);
-    },
-    //获取账户余额
+     //获取账户余额
     accountBalance() {
       this.get('paygetCurrencyBalance').then((data) => {
-        console.log(data.data)
-        console.log(data.currentBalanceA)
         this.other.price = parseInt(data.data.currentBalanceA) + parseInt(data.data.currentBalanceB);
+        this.other.currentBalanceA=parseInt(data.data.currentBalanceA);
+        this.other.currentBalanceB=parseInt(data.data.currentBalanceB);
       })
     },
     //获取数据
     queryData(page, pageSize = this.other.pageSize) {
       this.get('paygetAccountInfoList', {
         params: {
+          hospitalID:this.userMsg.hospitalID,
+          fullname:this.userMsg.fullname,
           page: page - 1,
           pageSize: pageSize
         }
       }).then(data => {
-        console.log(data)
+        // console.log(data)
         this.other.count = _.get(data, 'data.count', 0);
         this.array.tableData = _.get(data, 'data.data', []);
       })
@@ -115,7 +116,7 @@ export default {
 
 </script>
 <style lang='less'>
-.balanceMy {
+.docBalanceMy {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -131,6 +132,7 @@ export default {
       background-size: 100%;
     }
     .right {
+      // border:1px solid green;
       display: flex;
       flex-direction: column;
       justify-content: space-around;
@@ -139,7 +141,7 @@ export default {
       h1 {
         color: #8492A6;
         font-size: 1.5em;
-         span{
+        span{
           font-size: 1em;
         }
       }
@@ -161,6 +163,44 @@ export default {
         }
         span {
           font-size: 18px;
+        }
+        .el-button {
+          padding: 5px 15px;
+          span {
+            font-size: 5px;
+          }
+        }
+      }
+      .two {
+        // border:1px solid red;
+        margin-top: 10px;
+        display: flex;
+        div {
+          display: flex;
+          align-items: flex-end;
+        }
+        .jin {
+          background: url('../../../assets/images/jin.png') no-repeat;
+          background-size: auto 100%;
+          padding-left: 28px;
+        }
+        .yin {
+          background: url('../../../assets/images/jyin.png') no-repeat;
+          background-size: auto 100%;
+          padding-left: 28px;
+        }
+        .line {
+          border-left: 1px solid #ddd;
+          margin: 0 1em;
+        }
+        .txt {
+          font-size: 1em;
+          color: #C0CCDA;
+        }
+        b {
+          color: #8492A6;
+          font-size: 20px;
+          margin: 0 3px;
         }
       }
     }

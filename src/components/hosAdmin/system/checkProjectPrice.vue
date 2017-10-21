@@ -4,15 +4,14 @@
       <el-form ref="form" :model="form" label-width="86px">
         <el-row>
           <el-col>
-            <el-form-item label="检查项目:">
-              <el-select v-model="form.name" placeholder="请选择检查项目">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
-              </el-select>
-            </el-form-item>
+             <el-form-item label="检查类型:" prop="examineType">
+                <el-select v-model="form.examineType" multiple placeholder="请选择检查类型">
+                  <el-option v-for="item,index in array.checkOption" :key='index' :value='item.examineType' :label='item.examineType'></el-option>
+                </el-select>
+              </el-form-item>
           </el-col>
-          <el-button class="mlem" type="primary">查询</el-button>
-          <el-button class="mlem">重置</el-button>
+          <el-button class="mlem" type="primary" @click='queryData(1)'>查询</el-button>
+          <el-button class="mlem" @click="resetForm('form','queryData')">重置</el-button>
         </el-row>
       </el-form>
     </nav>
@@ -20,97 +19,152 @@
       <div>
         <el-breadcrumb separator="/">
           <el-breadcrumb-item>系统设置</el-breadcrumb-item>
-          <el-breadcrumb-item>检查服务费设置</el-breadcrumb-item>
+          <el-breadcrumb-item>检查项目价格设置</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
       <div>
-       <el-button class="mlem" type="primary" >同步</el-button>
-        <el-button class="mlem" type="primary" @click="createDialog">新建</el-button>
-        <el-button class="mlem">刷新</el-button>
+       <!-- <el-button class="mlem" type="primary" >同步</el-button> -->
+        <!-- <el-button class="mlem" type="primary" @click="createDialog">新建</el-button> -->
+        <el-button class="mlem" @click='queryData(1)'>刷新</el-button>
         <span class="mlem">
-          检查服务费记录共<font class='pub_count'>0</font>条
+          检查项目价格记录共<font class='pub_count'>{{other.count}}</font>条
         </span>
       </div>
     </section>
     <section class='main'>
-      <el-table :data="array.tableData" border height="100">
-        <el-table-column label="操作" prop="name">
-          <template scope="scope">
-            <el-tooltip class="item" effect="dark" content="编辑" placement="top">
-              <el-button icon="edit" class="false" :plain="true" type="success"></el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
-              <el-button size="mini" class="false" :plain="true" type="danger" icon="delete"></el-button>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" prop="name"></el-table-column>
-        <el-table-column label="操作" prop="name"></el-table-column>
-        <el-table-column label="操作" prsop="name"></el-table-column>
+      <el-table :data="array.tableData" border height="100" @row-dblclick='edit'>
+         <el-table-column label="操作" prop="name">
+            <template scope="scope">
+              <el-tooltip class="item" effect="dark" content="编辑" placement="top">
+                <el-button size="mini" icon="edit" class="false" :plain="true" type="success" @click='edit(scope.row)'></el-button>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column label="检查类型" prop="examineType"></el-table-column>
+          <el-table-column label="检查项目" prop="examineItem"></el-table-column>
+          <el-table-column label="项目价格" >
+            <template scope="scope">
+              <span>{{scope.row.price}}元</span>
+            </template>
+          </el-table-column>
       </el-table>
     </section>
     <section class="create">
       <el-dialog @close="resetForm('navform')" :close-on-click-modal="false" :title="other.title" size="tiny" v-model="alert.new_info">
         <el-form class="false" :model="navform" :rules="other.rules" ref="navform" label-width="87px">
-          <el-form-item label="检查项目:">
-            <el-select v-model="navform.name" placeholder="请选择检查项目">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
-            </el-select>
-          </el-form-item>
-           <el-form-item label="检查价格:">
-           <el-input placeholder="请输入检查价格(1~100元)" v-model="navform.conAgentName"></el-input>
+           <el-form-item label="项目价格:" prop="price">
+           <el-input placeholder="请输入项目价格(1~100元)" v-model="navform.price"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button class="mlem false" :plain="true" type="primary" @click="alert.new_info=false">取 消</el-button>
-          <el-button class="mlem false" type="primary" @click="submitForm('navform','saveNewInfo')">保存并新建</el-button>
-          <el-button class="mlem false" type="primary" @click="submitForm('navform','saveNewInfo','newinfo')">保存</el-button>
+          <el-button class="mlem false" type="primary" @click="submitForm('navform','saveNewInfo','new_info')">保存</el-button>
         </div>
       </el-dialog>
     </section>
+     <section class="pub_footer">
+          <el-pagination @size-change="(el)=>{queryData(1,el)}" @current-change="(el)=>{queryData(el)}" :current-page="other.page" :page-size="other.pageSize" :page-sizes="pageSizeArr" layout="total, sizes, prev, pager, next, jumper" :total="other.count">
+          </el-pagination>
+        </section>
   </section>
 </template>
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
       form: {
-
+        hospitalID:'',//院区id
+          examineType:[] //检查类型
       },
       navform: { //弹窗数据
 
       },
       array: {
         tableData: [], //表格数据
+        checkOption:[],//获取所有检查类型
       },
       alert: {
         new_info: false, //新建弹窗
       },
       other: {
-        title: "新增检查项目价格",
-        rules: {},
+        title:'',
+        page: 1,
+        pageSize: 30,
+        count: 0, //默认所有的检查项目的条数
+        rules: {
+                price: [{ 
+                    required: true,
+                    message: '请输入项目价格(1~100元)',
+                    trigger: 'change',
+                    validator: (rule, value, callback) => {
+                        if (value == '') {
+                            callback(new Error());
+                        } else {
+                            callback();
+                        }
+                    }
+                }]
+        },
       }
     }
   },
   computed: {
-
+       ...mapState([
+      'pageSizeArr',
+      'userMsg'
+    ])
   },
   created() {
-
+    this.form.hospitalID=this.userMsg.hospitalID;
+      this.getCheckType();
+      this.queryData(1);
   },
   methods: {
-    //获取数据
-    queryData() {
-
+    //获取检查类型
+    getCheckType() {
+      this.get('paygetPlaExamineType').then(data => {
+        console.log(data)
+        this.array.checkOption = _.get(data, 'data', []);
+      })
+    },
+    //获取所有收费项目
+    queryData(page=1,pageSize=this.other.pageSize) {
+      this.get('paygetExamineItemList', {
+        params: {
+          ...this.form,
+          page:page-1,
+          pageSize: pageSize,
+        }
+      }).then(data => {
+        console.log(data);
+        this.other.page=page;
+        this.other.pageSize = pageSize;
+        this.other.count = _.get(data, 'data.count', 0);
+        this.array.tableData = _.get(data, 'data.data', []);
+      })
+    },
+     //编辑项目服务费
+    edit(val){
+      this.other.title=`设置 ${val.examineType}--${val.examineItem} 的价格`;
+      this.alert.new_info=true;
+      this.navform=this.copy(val);
     },
     //新建弹窗
     createDialog() {
       this.alert.new_info = true;
     },
     //保存弹窗数据
-    saveNewInfo() {
-
+    saveNewInfo(resolve) {
+         this.post('payupdateExamineItem',this.navform).then(data => {
+        console.log(data);
+         this.$message({
+          message: data.message,
+          type: 'success'
+        });
+         resolve();
+         this.queryData(1);
+      })
     }
   }
 }
@@ -127,7 +181,6 @@ export default {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    border: 1px solid green;
     .el-table {
       flex-grow: 1;
     }
@@ -135,8 +188,8 @@ export default {
   .create {
 
     .el-dialog {
-      height: 276px;
-      .pub_margintop(276px);
+      height: 206px;
+      .pub_margintop(206px);
       .el-select,
       .el-input {
         width: 300px;

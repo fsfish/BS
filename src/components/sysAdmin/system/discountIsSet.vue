@@ -55,7 +55,7 @@
                 <el-button size="mini" icon="edit" class="false" :plain="true" type="success" @click='createInfo(scope.row)'></el-button>
               </el-tooltip>
                 <el-tooltip class="item" effect="dark" content="删除" placement="top">
-                <el-button size="mini" icon="delete" class="false" :plain="true" type="success" @click='edit(scope.row)'></el-button>
+                <el-button size="mini" icon="delete" class="false" :plain="true" type="success" @click='deleteInfo(scope.row,scope.$index)'></el-button>
               </el-tooltip>
             </template>
           </el-table-column>
@@ -87,7 +87,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button class="mlem false" :plain="true" type="primary" @click="alert.new_info=false">取 消</el-button>
-          <el-button class="mlem false" type="primary" @click="submitForm('navform','saveNewInfo')" v-if="other.title='新建服务折扣'">保存并新建</el-button>
+          <el-button class="mlem false" type="primary" @click="submitForm('navform','saveNewInfo')" v-if="other.title=='新建服务折扣'">保存并新建</el-button>
           <el-button class="mlem false" type="primary" @click="submitForm('navform','saveNewInfo','new_info')">保存</el-button>
         </div>
       </el-dialog>
@@ -124,13 +124,36 @@ export default {
         createServe: false, //新建服务院区弹窗
       },
       other: {
-        // title:'新建服务折扣',
+        title:'',
         url: '', //保存折扣路径
         page: 1,
         pageSize: 10,
         count: 0, //默认所有的检查项目的条数
         rules: {
-
+      serviceNode: [{ 
+                    required: true,
+                    message: '请选择服务类型',
+                    trigger: 'change',
+                    validator: (rule, value, callback) => {
+                        if (value == '') {
+                            callback(new Error());
+                        } else {
+                            callback();
+                        }
+                    }
+                }],
+                discount: [{ 
+                    required: true,
+                    message: '请输入折扣率(0.00~1.00)',
+                    trigger: 'change',
+                    validator: (rule, value, callback) => {
+                        if (value == '') {
+                            callback(new Error());
+                        } else {
+                            callback();
+                        }
+                    }
+                }]
         },
       }
     }
@@ -145,6 +168,7 @@ export default {
     this.getObtain();
     this.getHospital();
     this.getServiceType();
+    // this.$set(this.other,'title','');
   },
   methods: {
     //获取所有地区
@@ -177,11 +201,10 @@ export default {
       this.other.hostitle = `编辑${val.hospitalName}`
       this.hosForm.targetID = val.id;
       this.navform.targetID = val.id;
-      this.$set(this.navform,"targetName","");
       this.alert.createServe = true;
       this.queryData();
     },
-    //获取所有收费项目
+    //获取所有折扣类型
     queryData() {
       this.get('paygetDiscountList', {
         params: {
@@ -196,30 +219,21 @@ export default {
   
     //编辑项目服务费
     createInfo(val) {
-      console.log(val)
       if (val) {
-        console.log(1)
-        this.$set(this.other,title,"编辑服务折扣")
-        // this.other.title = '编辑服务折扣';
-        this.navform = this.copy(val);
+        this.other.title = '编辑服务折扣';
         this.other.url = 'payupdatePayDiscount';
+        setTimeout(()=>{
+       this.navform = this.copy(val);
+      },0);
       } else {
-         console.log(2)
-        this.$set(this.other,'title',"新建服务折扣")
-
-        // this.other.title = '新建服务折扣';
+        this.other.title = '新建服务折扣';
         this.other.url = 'payaddDiscount';
       }
-      console.log(this.other.title )
-      console.log(this.other.url )
-      setTimeout(()=>{
         this.alert.new_info=true;
-      },0);
     },
     //保存弹窗数据
     saveNewInfo(resolve) {
       this.post(this.other.url, this.navform).then(data => {
-        console.log(data);
         this.$message({
           message: data.message,
           type: 'success'
@@ -227,7 +241,32 @@ export default {
         resolve();
         this.queryData();
       })
-    }
+    },
+    //删除折扣
+    deleteInfo(item, index){
+        // console.log(item)
+     this.$confirm(`是否确认删除${item.targetName}的${item.serviceNode}服务折扣?`, '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.get('paydeleteDiscount', {
+                        params:{
+                            id: item.id,
+                        }
+                    }).then(data => {
+                        this.$message({
+                            type: 'success',
+                            message: data.message
+                        });
+                        this.array.tableData.splice(index, 1)
+                        this.other.count--;
+                    }, () => {
+                        console.log('错误')
+                    })
+                }).catch(() => {
+                });
+    },
   }
 }
 
@@ -243,7 +282,6 @@ export default {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    border: 1px solid green;
     .el-table {
       flex-grow: 1;
     }
@@ -271,14 +309,13 @@ export default {
   .createHos {
     .el-dialog {
       width: 700px;
-      height: 500px;
+      height: 400px;
       display: flex;
       flex-direction: column;
-      .pub_margintop(500px);
+      .pub_margintop(400px);
       .el-dialog__body {
         padding-bottom: 10px;
         flex-grow: 1;
-        border: 1px solid red;
         display: flex;
         flex-direction: column;
         .el-row:not(.hr) {
