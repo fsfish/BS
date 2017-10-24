@@ -29,7 +29,7 @@
     </section>
     <section class='main'>
       <el-table :data="array.hostitalOption" border height="100" @row-dblclick='showCurrow'>
-        <el-table-column label="操作" prop="name" width="120">
+        <el-table-column label="操作" prop="name" width="120" align="center">
           <template scope="scope">
             <el-tooltip class="item" effect="dark" content="编辑" placement="top">
               <el-button size="mini" icon="edit" class="false" :plain="true" type="success" @click='showCurrow(scope.row)'></el-button>
@@ -41,18 +41,19 @@
       </el-table>
     </section>
     <section class="create">
-      <el-dialog @close="resetForm('navform')"  :close-on-click-modal="false" title="设置服务费" size="tiny" v-model="alert.new_info">
+      <el-dialog @close="resetForm('navform')" :close-on-click-modal="false" title="设置服务费" size="tiny" v-model="alert.new_info">
         <el-form class="false" :model="navform" :rules="other.rules" ref="navform" label-width="130px">
-          <el-form-item label="基础服务费:" prop="servicePrice">
+          <el-form-item label="平台服务费:" prop="servicePrice">
             <el-input placeholder="请输入基础服务费(0~100元)" v-model="navform.servicePrice">
             </el-input>
           </el-form-item>
-            <el-form-item label="远程书写服务费:" prop="remoteWritePrice">
-            <el-input placeholder="请输入远程书写服务费(0~100元)" v-model="navform.remoteWritePrice">
+        
+          <el-form-item label="远程书写服务费:" prop="writePrice">
+            <el-input placeholder="请输入远程书写服务费(0~100元)" v-model="navform.writePrice">
             </el-input>
           </el-form-item>
-          <el-form-item label="远程审核服务费:" prop="remoteAuditPrice">
-            <el-input placeholder="请输入远程审核服务费(0~100元)" v-model="navform.remoteAuditPrice">
+          <el-form-item label="远程审核服务费:" prop="auditPrice">
+            <el-input placeholder="请输入远程审核服务费(0~100元)" v-model="navform.auditPrice">
             </el-input>
           </el-form-item>
         </el-form>
@@ -78,32 +79,35 @@
           </el-row>
         </el-form>
         <el-row class='hr'>
-          <div>项目列表(
+          <div>
+            <el-button class="mlem crbtn" type="primary" @click="synchronous" >同步</el-button>
+            项目列表(
             <font class='pub_count'>{{other.count}}</font>)</div>
         </el-row>
         <el-table :data="array.tableData" border height="100" @row-dblclick='edit'>
-          <el-table-column label="操作" prop="name">
+          <el-table-column label="操作" prop="name" align="center">
             <template scope="scope">
               <el-tooltip class="item" effect="dark" content="编辑" placement="top">
                 <el-button size="mini" icon="edit" class="false" :plain="true" type="success" @click='edit(scope.row)'></el-button>
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column label="检查类型" prop="examineType"></el-table-column>
-          <el-table-column label="检查项目" prop="examineItem"></el-table-column>
-          <el-table-column label="基础服务费" >
+          <el-table-column label="检查类型" prop="examineType" width="150"></el-table-column>
+          <el-table-column label="检查项目" prop="examineItem" width="150"></el-table-column>
+          <el-table-column label="平台服务费" width="150">
             <template scope="scope">
               <span>{{scope.row.servicePrice}}元</span>
             </template>
           </el-table-column>
-           <el-table-column label="远程书写服务费" >
+        
+          <el-table-column label="远程书写服务费" width="150">
             <template scope="scope">
-              <span>{{scope.row.remoteWritePrice}}元</span>
+              <span>{{scope.row.writePrice}}元</span>
             </template>
           </el-table-column>
-           <el-table-column label="远程审核服务费" >
+          <el-table-column label="远程审核服务费" width="150">
             <template scope="scope">
-              <span>{{scope.row.remoteAuditPrice}}元</span>
+              <span>{{scope.row.auditPrice}}元</span>
             </template>
           </el-table-column>
         </el-table>
@@ -119,7 +123,7 @@
   </section>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState,mapAction } from "vuex";
 export default {
   data() {
     return {
@@ -131,7 +135,7 @@ export default {
 
       },
       hosForm: { //医院对象
-        hospitalID:'',//院区id
+        hospitalID: '', //院区id
         examineType: [], //获取检查类型
       },
       array: {
@@ -148,43 +152,45 @@ export default {
         page: 1,
         pageSize: 10,
         count: 0, //默认所有的检查项目的条数
+        state:1,//同步按钮状态
         rules: {
-          servicePrice: [{ 
-                    required: true,
-                    message: '请输入基础服务费(0~100元)',
-                    trigger: 'blur',
-                    validator: (rule, value, callback) => {
-                        if (value == '') {
-                            callback(new Error());
-                        } else {
-                            callback();
-                        }
-                    }
-                }],
-          remoteWritePrice: [{
-                    required: true,
-                    message: '请输入远程书写服务费(0~100元)',
-                    trigger: 'blur',
-                    validator: (rule, value, callback) => {
-                        if (value == '') {
-                            callback(new Error());
-                        } else {
-                            callback();
-                        }
-                    }
-                }],
-         remoteAuditPrice: [{
-                    required: true,
-                    message: '请输入远程审核服务费(0~100元)',
-                    trigger: 'blur',
-                    validator: (rule, value, callback) => {
-                        if (value == '') {
-                            callback(new Error());
-                        } else {
-                            callback();
-                        }
-                    }
-                }],
+          servicePrice: [{
+            required: true,
+            message: '请输入平台服务费(0~100元)',
+            trigger: 'blur',
+            validator: (rule, value, callback) => {
+              if (value == '') {
+                callback(new Error());
+              } else {
+                callback();
+              }
+            }
+          }],
+          writePrice: [{
+            required: true,
+            message: '请输入远程书写服务费(0~100元)',
+            trigger: 'blur',
+            validator: (rule, value, callback) => {
+              if (value == '') {
+                callback(new Error());
+              } else {
+                callback();
+              }
+            }
+          }],
+         auditPrice: [{
+            required: true,
+            message: '请输入远程审核服务费(0~100元)',
+            trigger: 'blur',
+            validator: (rule, value, callback) => {
+              if (value == '') {
+                callback(new Error());
+              } else {
+                callback();
+              }
+            }
+          }]
+          
         },
       }
     }
@@ -192,7 +198,8 @@ export default {
   computed: {
     ...mapState([
       'pageSizeArr',
-      'regionProps'
+      'regionProps',
+      'synchronousState'
     ])
   },
   created() {
@@ -229,50 +236,68 @@ export default {
     showCurrow(val) {
       console.log(val);
       this.other.title = `编辑${val.hospitalName}`
-      this.hosForm.hospitalID =val.id;
+      this.hosForm.hospitalID = val.id;
       this.alert.createServe = true;
       this.queryData();
     },
     //获取所有收费项目
-    queryData(page=1,pageSize=this.other.pageSize) {
+    queryData(page = 1, pageSize = this.other.pageSize) {
       this.get('paygetExamineItemList', {
         params: {
           ...this.hosForm,
-          page:page-1,
+          page: page - 1,
           pageSize: pageSize,
         }
       }).then(data => {
         console.log(data);
-        this.other.page=page;
+        this.other.page = page;
         this.other.pageSize = pageSize;
         this.other.count = _.get(data, 'data.count', 0);
         this.array.tableData = _.get(data, 'data.data', []);
       })
     },
     //关闭弹窗,清空该医院的对象
-    resetObj(){
+    resetObj() {
       this.resetForm('hosForm');
-      this.other.pageSize=10;
+      this.other.pageSize = 10;
     },
     //编辑项目服务费
-    edit(val){
-      this.alert.new_info=true;
-      this.navform=this.copy(val);
+    edit(val) {
+      this.alert.new_info = true;
+      this.navform = this.copy(val);
     },
     //保存弹窗数据
     saveNewInfo(resolve) {
-       this.post('payupdateExamineItem',this.navform).then(data => {
+      this.post('payupdateExamineItem', this.navform).then(data => {
         console.log(data);
-         this.$message({
+        this.$message({
           message: data.message,
           type: 'success'
         });
-         resolve();
-         this.queryData(1);
+        resolve();
+        this.queryData(1);
+      })
+    },
+    //同步检查项目
+    synchronous() {
+      this.get('payinitExamineItem').then(data => {
+        console.log(data);
+        if (data.httpCode == 'OK') {
+          this.$message({
+            message: data.message,
+            type: 'success'
+          });
+          // this.other.state=1;
+          // this.$store.dispatch("setSynchronous",1);
+          this.queryData(1);
+        }else{
+              this.queryData(1);
+        }
       })
     }
   }
 }
+
 </script>
 <style lang='less'>
 @import '../../../assets/css/mixin.less';
@@ -292,8 +317,8 @@ export default {
   .create {
 
     .el-dialog {
-      height: 320px;
-      .pub_margintop(320px);
+      height: 330px;
+      .pub_margintop(330px);
       .el-select,
       .el-input {
         width: 300px;
@@ -312,10 +337,10 @@ export default {
   .createHos {
     .el-dialog {
       width: 700px;
-      height: 500px;
+      height: 600px;
       display: flex;
       flex-direction: column;
-      .pub_margintop(500px);
+      .pub_margintop(600px);
       .el-dialog__body {
         padding-bottom: 10px;
         flex-grow: 1;
@@ -340,6 +365,8 @@ export default {
           align-items: center;
           .crbtn {
             padding: 3px 9px;
+            margin-right: 0.5em;
+            cursor: pointer;
           }
           padding:10px 3px;
         }

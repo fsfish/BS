@@ -13,6 +13,7 @@ var title, localTitle;
 //     // localTitle = 'http://127.0.0.1:50050/INDEX.HTML?';
 // 	// title='http://192.168.0.188:8001/';   //王辉
 	// title='http://192.168.0.29:8004/';    //高笑
+	// title='/';
 //  // title='http://192.168.0.20:8001/';		//聂
 //  // title='http://192.168.0.65:8001/'
  localTitle = 'http://192.168.0.48:50050/INDEX.HTML?';

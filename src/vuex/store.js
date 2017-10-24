@@ -21,36 +21,44 @@ let store=new Vuex.Store({
         value: 'postCode',
         label: 'name',
         children: 'list'
-    },
+             },
+        synchronousState:0,//同步检查项目按钮状态,
+        loginState:'',//存储登录成功状态(promise)
     },
     mutations:{
     	//设置登录院区id
     	setHospitalID(state,value){
     		state.hospitalID=value;
     	},
-    	//设置登录科室id
-    	setDepartmentID(state,value){
-    		state.departmentID=value
-    	},
     	//设置用户信息
     	setUserMsg(state,value){
     		state.userMsg=value;
-    	}
+    	},
+        //设置同步按钮状态
+        setSynchronous(state,value){
+            state.synchronousState=value;
+        },
+        //确定登录成功
+        toPrepare(state,value){
+            // console.log(value)
+            state.loginState=Promise.resolve(value);
+        }
+
     },
     actions:{
     	//设置登录院区id
     	setHospitalID({commit},value){
     		commit('setHospitalID',value);
     	},
-    	//设置登录科室id
-    	setDepartmentID({commit},value){
-    		commit('setDepartmentID',value);
-    	},
     	//设置用户信息
     	setUserMsg({commit},value){
     		// value=JSON.parse(JSON.stringify(value));
     		commit('setUserMsg',value);
-    	}
+    	},
+        //设置同步按钮状态
+        setSynchronous({commit},value){
+            commit('setSynchronous',value);
+        }
     }
 });
 

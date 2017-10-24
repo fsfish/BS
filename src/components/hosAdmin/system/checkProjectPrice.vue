@@ -23,9 +23,7 @@
         </el-breadcrumb>
       </div>
       <div>
-       <!-- <el-button class="mlem" type="primary" >同步</el-button> -->
-        <!-- <el-button class="mlem" type="primary" @click="createDialog">新建</el-button> -->
-        <el-button class="mlem" @click='queryData(1)'>刷新</el-button>
+      <el-button class="mlem" @click='queryData(1)'>刷新</el-button>
         <span class="mlem">
           检查项目价格记录共<font class='pub_count'>{{other.count}}</font>条
         </span>
@@ -42,19 +40,30 @@
           </el-table-column>
           <el-table-column label="检查类型" prop="examineType"></el-table-column>
           <el-table-column label="检查项目" prop="examineItem"></el-table-column>
-          <el-table-column label="项目价格" >
+            <el-table-column label="书写定价" width="150">
             <template scope="scope">
-              <span>{{scope.row.price}}元</span>
+              <span>{{scope.row.serviceWritePrice}}元</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="审核定价" width="150">
+            <template scope="scope">
+              <span>{{scope.row.serviceAuditPrice}}元</span>
             </template>
           </el-table-column>
       </el-table>
     </section>
     <section class="create">
       <el-dialog @close="resetForm('navform')" :close-on-click-modal="false" :title="other.title" size="tiny" v-model="alert.new_info">
-        <el-form class="false" :model="navform" :rules="other.rules" ref="navform" label-width="87px">
-           <el-form-item label="项目价格:" prop="price">
-           <el-input placeholder="请输入项目价格(1~100元)" v-model="navform.price"></el-input>
+        <el-form class="false" :model="navform" :rules="other.rules" ref="navform" label-width="120px">
+            <el-form-item label="书写定价:" prop="serviceWritePrice">
+            <el-input placeholder="请输入书写定价(0~100元)" v-model="navform.serviceWritePrice">
+            </el-input>
           </el-form-item>
+          <el-form-item label="审核定价:" prop="serviceAuditPrice">
+            <el-input placeholder="请输入审核定价(0~100元)" v-model="navform.serviceAuditPrice">
+            </el-input>
+          </el-form-item>
+          
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button class="mlem false" :plain="true" type="primary" @click="alert.new_info=false">取 消</el-button>
@@ -93,18 +102,30 @@ export default {
         pageSize: 30,
         count: 0, //默认所有的检查项目的条数
         rules: {
-                price: [{ 
-                    required: true,
-                    message: '请输入项目价格(1~100元)',
-                    trigger: 'change',
-                    validator: (rule, value, callback) => {
-                        if (value == '') {
-                            callback(new Error());
-                        } else {
-                            callback();
-                        }
-                    }
-                }]
+           serviceWritePrice: [{
+            required: true,
+            message: '请输入书写定价(0~100元)',
+            trigger: 'blur',
+            validator: (rule, value, callback) => {
+              if (value == '') {
+                callback(new Error());
+              } else {
+                callback();
+              }
+            }
+          }],
+          serviceAuditPrice: [{
+            required: true,
+            message: '请输入审核定价(0~100元)',
+            trigger: 'blur',
+            validator: (rule, value, callback) => {
+              if (value == '') {
+                callback(new Error());
+              } else {
+                callback();
+              }
+            }
+          }],
         },
       }
     }
@@ -188,8 +209,8 @@ export default {
   .create {
 
     .el-dialog {
-      height: 206px;
-      .pub_margintop(206px);
+      height: 260px;
+      .pub_margintop(260px);
       .el-select,
       .el-input {
         width: 300px;

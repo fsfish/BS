@@ -30,7 +30,8 @@
                 <span>{{['个人','医院'][scope.row.accountType]}}</span>
               </template>
             </el-table-column>
-            <el-table-column label="消费种类" prop="orderName"></el-table-column>
+            <el-table-column label="消费人" prop="fullname"></el-table-column>
+            <el-table-column label="消费种类" prop="orderName" width="150" show-overflow-tooltip></el-table-column>
             <el-table-column label="消费金额" prop="orderAmount">
               <template scope="scope">
                 <span>{{toThousands(scope.row.orderAmount)}}元</span>
@@ -77,13 +78,17 @@ export default {
   computed: {
     ...mapState([
       'pageSizeArr',
-      'userMsg'
+      'userMsg',
+      'loginState'
     ])
   },
   created() {
-    this.$set(this.other, 'user', this.userMsg.fullname);
+  this.loginState.then(data=>{
+    this.$set(this.other, 'user', data.fullname);
     this.accountBalance();
     this.queryData(1);
+  })
+    
   },
   methods: {
     handleClick(tab, event) {

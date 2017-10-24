@@ -79,13 +79,16 @@ export default {
   computed: {
       ...mapState([
       'pageSizeArr',
-      'userMsg'
+      'userMsg',
+      'loginState'
     ])
   },
   created() {
-      this.$set(this.other, 'user', this.userMsg.fullname);
+     this.loginState.then(data=>{
+    this.$set(this.other, 'user', this.userMsg.fullname);
     this.accountBalance();
     this.queryData(1);
+  })
   },
   methods: {
      //获取账户余额

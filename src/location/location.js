@@ -12,6 +12,7 @@ payupdateExamineItem:title+'pay/updateExamineItem',//设置价格
 paygetHospitalAreaTree:title+'pay/getHospitalAreaTree',//获取地区树形
 paygetHospitals:title+'pay/getHospitals',//根据地区查询院区信息数据
 paygetPlaExamineType:title+'pay/getPlaExamineType',//查询从运维取检查类型
+payinitExamineItem:title+'pay/initExamineItem',//同步所有的检查项目
 
 
 paygetDiscountList:title+'pay/getDiscountList',//获取折扣院区列表
@@ -26,6 +27,7 @@ paygetAccountInfoList:title+'pay/getAccountInfoList',//查询账户消费
 paygetUserFullnames:title+'pay/getUserFullnames',//获取医生下拉框
 
 paygetCurrencyBalance:title+'pay/getCurrencyBalance',//获取账户余额
+
 }
 
 

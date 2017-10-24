@@ -145,7 +145,7 @@
   </div>
 </template>
 <script>
-import { mapState,mapActions } from "vuex";
+import { mapState,mapActions,mapMutations } from "vuex";
 export default {
   name: 'app',
   data() {
@@ -186,6 +186,8 @@ export default {
             this.user=this.copy(_.get(data,'data',{}));
             this.$set(this.user,data.data);
             this.$store.dispatch("setUserMsg",_.get(data,'data',{}));
+        this.$store.commit('toPrepare',data.data);
+            
             })
           //  this.get('paylogin', {params:{
           // username:'zhang',
@@ -213,7 +215,6 @@ export default {
             self.location = 'login.html';
           }, 2000)
         }
-      // self.location='./login.html'; 
             })
     },
     //修改密码

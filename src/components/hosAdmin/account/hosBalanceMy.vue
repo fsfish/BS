@@ -31,6 +31,7 @@
         <el-tab-pane label="最近交易记录" name="first">
           <el-table :data="array.tableData" border height="100">
         <el-table-column label="账户名称" prop="accountName" show-overflow-tooltip></el-table-column>
+          <el-table-column label="消费人" prop="fullname"></el-table-column>
         <el-table-column label="消费种类" prop="orderName"></el-table-column>
        <el-table-column label="消费金额" prop="orderAmount">
           <template scope="scope">
@@ -80,13 +81,19 @@ export default {
   computed: {
     ...mapState([
       'pageSizeArr',
-      'userMsg'
+      'userMsg',
+      'loginState'
     ])
   },
   created() {
+     this.loginState.then(data=>{
+   
     this.$set(this.other, 'user', this.userMsg.fullname);
     this.accountBalance();
     this.queryData(1);
+  })
+    
+
   },
   methods: {
      //获取账户余额

@@ -61,7 +61,10 @@ var webpackConfig = merge(baseWebpackConfig, {
         // https://github.com/kangax/html-minifier#options-quick-reference
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-     chunks: ['common','vendor','app'],
+     //引入需要的块文件
+     // chunks: ['common','manifest','vendor','app'],
+     // 引入除了某个块的依赖文件
+      excludeChunks:['login'],
      chunksSortMode: 'dependency'
     }),
     new HtmlWebpackPlugin({
@@ -76,7 +79,8 @@ var webpackConfig = merge(baseWebpackConfig, {
         // https://github.com/kangax/html-minifier#options-quick-reference
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-      chunks: ['common','vendor','login'],
+      // chunks: ['common','manifest','vendor','login'],
+      excludeChunks:['app'],
       chunksSortMode: 'dependency',
     }),
     // keep module.id stable when vender modules does not change
