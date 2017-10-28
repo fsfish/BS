@@ -11,7 +11,7 @@ var el = new Vue({ data: { message: 'Hello Vue!' } });
 // 添加一个响应拦截器
 axios.interceptors.response.use(function(response) {
   // Do something with response data
- // console.log(response,'返回的总数据');
+ console.log(response,'返回的总数据');
   let httpCode = _.get(response, 'data.httpCode');
   if (httpCode == 'OK') {
     return _.get(response, 'data', {});

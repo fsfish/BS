@@ -24,20 +24,20 @@
       <el-tabs v-model="activeName">
         <el-tab-pane label="最近交易记录" name="first">
           <el-table :data="array.tableData" border height="100">
-            <el-table-column label="账户名称" prop="accountName" width="180" show-overflow-tooltip></el-table-column>
+            <el-table-column label="账户名称" prop="accountName"  show-overflow-tooltip></el-table-column>
             <el-table-column label="账户类型" prop="name">
               <template scope="scope">
                 <span>{{['个人','医院'][scope.row.accountType]}}</span>
               </template>
             </el-table-column>
             <el-table-column label="消费人" prop="fullname"></el-table-column>
-            <el-table-column label="消费种类" prop="orderName" width="150" show-overflow-tooltip></el-table-column>
+            <el-table-column label="消费种类" prop="orderName"  show-overflow-tooltip></el-table-column>
             <el-table-column label="消费金额" prop="orderAmount">
               <template scope="scope">
                 <span>{{toThousands(scope.row.orderAmount)}}元</span>
               </template>
             </el-table-column>
-            <el-table-column label="消费时间" prop="startTime" width="230" show-overflow-tooltip>
+            <el-table-column label="消费时间" prop="startTime"  show-overflow-tooltip>
               <template scope="scope">
                 <span>{{formatDate(scope.row.startTime)}}</span>
               </template>

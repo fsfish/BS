@@ -93,7 +93,7 @@ export default {
           }
           setTimeout(() => {
             self.location = 'index.html';
-          }, 2000)
+          }, 1000)
         }
       })
     },

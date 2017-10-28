@@ -4,8 +4,8 @@
       <el-form ref="form" :model="form" label-width="86px">
         <el-row>
           <el-col>
-            <el-form-item label="医生姓名:">
-              <el-select v-model="form.fullname" placeholder="请选择医生" clearable>
+            <el-form-item label="医生姓名:" prop="fullname">
+              <el-select v-model="form.fullname" placeholder="请选择医生"  clearable>
                 <el-option v-for="(item,index) in array.doctorOption" :key="index" :label="item" :value="item"></el-option>
               </el-select>
             </el-form-item>

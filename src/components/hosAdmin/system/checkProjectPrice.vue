@@ -56,11 +56,11 @@
       <el-dialog @close="resetForm('navform')" :close-on-click-modal="false" :title="other.title" size="tiny" v-model="alert.new_info">
         <el-form class="false" :model="navform" :rules="other.rules" ref="navform" label-width="120px">
             <el-form-item label="书写定价:" prop="serviceWritePrice">
-            <el-input placeholder="请输入书写定价(0~100元)" v-model="navform.serviceWritePrice">
+            <el-input type="number" placeholder="请输入书写定价(0~100元)" v-model="navform.serviceWritePrice">
             </el-input>
           </el-form-item>
           <el-form-item label="审核定价:" prop="serviceAuditPrice">
-            <el-input placeholder="请输入审核定价(0~100元)" v-model="navform.serviceAuditPrice">
+            <el-input type="number"  placeholder="请输入审核定价(0~100元)" v-model="navform.serviceAuditPrice">
             </el-input>
           </el-form-item>
           
@@ -104,10 +104,11 @@ export default {
         rules: {
            serviceWritePrice: [{
             required: true,
-            message: '请输入书写定价(0~100元)',
+            message: '请输入书写定价(0~1000元)',
             trigger: 'blur',
             validator: (rule, value, callback) => {
-              if (value == '') {
+              // console.log(typeof(parseInt(value)))
+              if (value === ''||parseInt(value)<0) {
                 callback(new Error());
               } else {
                 callback();
@@ -116,10 +117,10 @@ export default {
           }],
           serviceAuditPrice: [{
             required: true,
-            message: '请输入审核定价(0~100元)',
+            message: '请输入审核定价(0~1000元)',
             trigger: 'blur',
             validator: (rule, value, callback) => {
-              if (value == '') {
+              if (value == ''||parseInt(value)<0) {
                 callback(new Error());
               } else {
                 callback();

@@ -38,7 +38,7 @@
     </section>
     <section class='main'>
       <el-table :data="array.tableData" border height="100" highlight-current-row @row-click='handleClick'>
-        <el-table-column label="院区名称" prop="accountName" width="180"></el-table-column>
+        <el-table-column label="院区名称" prop="accountName" ></el-table-column>
         <el-table-column label="充值金额" prop="orderAmount">
           <template scope="scope">
             <span>{{toThousands(scope.row.orderAmount)}}</span>
@@ -50,7 +50,7 @@
           </template>
         </el-table-column>
         <el-table-column label="订单类型" prop="orderName"></el-table-column>
-        <el-table-column label="充值时间" width="200">
+        <el-table-column label="充值时间" >
           <template scope="scope">
             <span>{{formatDate(scope.row.startTime)}}</span>
           </template>
@@ -70,7 +70,7 @@
               </el-select>
                     </el-form-item>
                     <el-form-item label="充值金额:" prop="price" >
-                        <el-input placeholder="请输入充值金额" v-model="navform.price">
+                        <el-input type="number" placeholder="请输入充值金额" v-model="navform.price">
                         </el-input>
                     </el-form-item>
                 </el-form>
@@ -153,7 +153,7 @@ export default {
                     message: '请输入充值金额',
                     trigger: 'change',
                     validator: (rule, value, callback) => {
-                        if (value == '') {
+                        if (value == ''||parseInt(value)<0) {
                             callback(new Error());
                         } else {
                             callback();

@@ -21,7 +21,7 @@
             <el-dropdown-item>
               <el-button type="text" @click="alert.resetPass=true">修改密码</el-button>
             </el-dropdown-item>
-            <el-dropdown-item @click="loginout" >
+            <el-dropdown-item @click="loginout">
               <el-button type="text" @click='loginout'>退出</el-button>
             </el-dropdown-item>
           </el-dropdown-menu>
@@ -46,6 +46,12 @@
             </el-menu-item>
             <el-menu-item index="/payRecords">
               <span slot="title">医院充值记录</span>
+            </el-menu-item>
+            <el-menu-item index="/params">
+              <span slot="title">系统参数</span>
+            </el-menu-item>
+            <el-menu-item index="/dataDictionary">
+              <span slot="title">数据字典</span>
             </el-menu-item>
           </el-submenu>
           <el-submenu index="2">
@@ -83,7 +89,7 @@
           </el-submenu>
           <el-submenu index="2">
             <template slot="title">
-             <i class="icon iconfont icon-caiwujichushezhi"></i>
+              <i class="icon iconfont icon-caiwujichushezhi"></i>
               <span slot="title">财务设置</span>
             </template>
             <el-menu-item index="/hosCapitalSubsidiary">
@@ -92,7 +98,7 @@
           </el-submenu>
           <el-submenu index="3">
             <template slot="title">
-             <i class="icon iconfont icon-zhanghushezhi"></i>
+              <i class="icon iconfont icon-zhanghushezhi"></i>
               <span slot="title">账户设置</span>
             </template>
             <el-menu-item index="/hosBalanceMy">
@@ -104,7 +110,7 @@
         <el-menu :router="true" :unique-opened="true" class="el-menu-vertical-demo" @open="handleOpen" :collapse="isCollapse" v-if="user.category==2">
           <el-submenu index="1">
             <template slot="title">
-             <i class="icon iconfont icon-caiwujichushezhi"></i>
+              <i class="icon iconfont icon-caiwujichushezhi"></i>
               <span slot="title">财务设置</span>
             </template>
             <el-menu-item index="/docCapitalSubsidiary">
@@ -113,7 +119,7 @@
           </el-submenu>
           <el-submenu index="2">
             <template slot="title">
-             <i class="icon iconfont icon-zhanghushezhi"></i>
+              <i class="icon iconfont icon-zhanghushezhi"></i>
               <span slot="title">账户设置</span>
             </template>
             <el-menu-item index="/docBalanceMy">
@@ -145,31 +151,31 @@
   </div>
 </template>
 <script>
-import { mapState,mapActions,mapMutations } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 export default {
   name: 'app',
   data() {
     return {
       isCollapse: true,
-        user:{
+      user: {
 
-        },
+      },
       alert: {
         resetPass: false, //修改密码
       },
       navform: {
-        oldPassword:'',
-        newPassword:''
+        oldPassword: '',
+        newPassword: ''
       }
     }
   },
   computed: {
     ...mapState([
-        "userMsg"
-      ])
+      "userMsg"
+    ])
   },
   created() {
-        this.login();
+    this.login();
   },
   methods: {
     handleOpen(key, keyPath) {
@@ -178,66 +184,68 @@ export default {
     //登录
     login() {
 
-       let storage=window.localStorage;
-      this.get('paylogin', {params:{
-          username:storage.username,
-          password:storage.password,
-          }}).then(data => {
-            this.user=this.copy(_.get(data,'data',{}));
-            this.$set(this.user,data.data);
-            this.$store.dispatch("setUserMsg",_.get(data,'data',{}));
-        this.$store.commit('toPrepare',data.data);
-            
-            })
-          //  this.get('paylogin', {params:{
-          // username:'zhang',
-          // password:'888888',
-          // }}).then(data => {
-          //   // this.$router.go('');
-          //   console.log(data)
-          //   data.data=this.copy(_.get(data,'data',{}));
-          //   this.$set(data.data,data.data);
-          //   this.$store.dispatch("setUserMsg",_.get(data,'data',{}));
-          //   })
-        
+      let storage = window.localStorage;
+      this.get('paylogin', {
+        params: {
+          username: storage.username,
+          password: storage.password,
+        }
+      }).then(data => {
+        this.user = this.copy(_.get(data, 'data', {}));
+        this.$set(this.user, data.data);
+        this.$store.dispatch("setUserMsg", _.get(data, 'data', {}));
+        this.$store.commit('toPrepare', data.data);
+
+      })
+      //  this.get('paylogin', {params:{
+      // username:'zhang',
+      // password:'888888',
+      // }}).then(data => {
+      //   // this.$router.go('');
+      //   console.log(data)
+      //   data.data=this.copy(_.get(data,'data',{}));
+      //   this.$set(data.data,data.data);
+      //   this.$store.dispatch("setUserMsg",_.get(data,'data',{}));
+      //   })
+
     },
     //退出登录
     loginout() {
-          this.get('paylogout').then(data => {
-            console.log(data);
-             if (data.httpCode == 'OK') {
+      this.get('paylogout').then(data => {
+        console.log(data);
+        if (data.httpCode == 'OK') {
           this.$message({
             message: data.message,
             type: 'success'
           });
-          this.$store.dispatch("setUserMsg",{});
-          setTimeout(() => {
-            self.location = 'login.html';
-          }, 2000)
-        }
-            })
-    },
-    //修改密码
-    resetpass(resolve){
-this.get('payupdatePassword',{
-  params:{
-    ...this.navform,
-    id:this.user.id
-  }
-}).then(data => {
-            console.log(data);
-            resolve();
-      if (data.httpCode == 'OK') {
-          this.$message({
-            message: data.message,
-            type: 'success'
-          });
-          this.$store.dispatch("setUserMsg",{});
+          this.$store.dispatch("setUserMsg", {});
           setTimeout(() => {
             self.location = 'login.html';
           }, 1000)
         }
-            })
+      })
+    },
+    //修改密码
+    resetpass(resolve) {
+      this.get('payupdatePassword', {
+        params: {
+          ...this.navform,
+          id: this.user.id
+        }
+      }).then(data => {
+        console.log(data);
+        resolve();
+        if (data.httpCode == 'OK') {
+          this.$message({
+            message: data.message,
+            type: 'success'
+          });
+          // this.$store.dispatch("setUserMsg", {});
+          setTimeout(() => {
+            self.location = 'login.html';
+          }, 1000)
+        }
+      })
     }
   }
 
@@ -279,8 +287,6 @@ this.get('payupdatePassword',{
       .el-dropdown-link {
         color: #fff;
       }
-      
-      
     }
   }
 
@@ -294,14 +300,14 @@ this.get('payupdatePassword',{
       display: flex;
       flex-direction: column;
       background: #eef1f6;
-      .iconfont{
+      .iconfont {
         font-size: 1.1em;
       }
-      .icon-zhankai{
+      .icon-zhankai {
         font-weight: 600;
         font-size: 1.5em;
       }
-      .icon-zhanghushezhi{
+      .icon-zhanghushezhi {
         font-size: 1.3em;
       }
       .this_spread {
@@ -330,8 +336,8 @@ this.get('payupdatePassword',{
     .el-dialog {
       height: 260px;
       .pub_margintop(260px);
-      .el-dialog__body{
-        padding-bottom:10px;
+      .el-dialog__body {
+        padding-bottom: 10px;
       }
       .el-input {
         width: 300px;
@@ -342,11 +348,13 @@ this.get('payupdatePassword',{
     }
   }
 }
+
 .el-dropdown-menu {
   right: 6px;
-        max-width: 75px;
-        .el-button--text{
-        color:#333 !important;
-      }
-      }
+  max-width: 75px;
+  .el-button--text {
+    color: #333 !important;
+  }
+}
+
 </style>
