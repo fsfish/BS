@@ -61,11 +61,11 @@ var webpackConfig = merge(baseWebpackConfig, {
         // https://github.com/kangax/html-minifier#options-quick-reference
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-     //引入需要的块文件
-     // chunks: ['common','manifest','vendor','app'],
-     // 引入除了某个块的依赖文件
-      excludeChunks:['login'],
-     chunksSortMode: 'dependency'
+      //引入需要的块文件
+      // chunks: ['common','manifest','vendor','app'],
+      // 引入除了某个块的依赖文件
+      excludeChunks: ['login'],
+      chunksSortMode: 'dependency'
     }),
     new HtmlWebpackPlugin({
       filename: config.build.login,
@@ -80,7 +80,7 @@ var webpackConfig = merge(baseWebpackConfig, {
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       // chunks: ['common','manifest','vendor','login'],
-      excludeChunks:['app'],
+      excludeChunks: ['app'],
       chunksSortMode: 'dependency',
     }),
     // keep module.id stable when vender modules does not change
@@ -88,7 +88,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      minChunks: function (module, count) {
+      minChunks: function(module, count) {
         // any required modules inside node_modules are extracted to vendor
         return (
           module.resource &&
@@ -106,15 +106,13 @@ var webpackConfig = merge(baseWebpackConfig, {
       chunks: ['vendor']
     }),
     // copy custom static assets
-    new CopyWebpackPlugin([
-      {
-        from: path.resolve(__dirname, '../static'),
-        to: config.build.assetsSubDirectory,
-        ignore: ['.*']
-      }
-    ]),
+    new CopyWebpackPlugin([{
+      from: path.resolve(__dirname, '../static'),
+      to: config.build.assetsSubDirectory,
+      ignore: ['.*']
+    }]),
     //使用lodash
-     new webpack.ProvidePlugin({
+    new webpack.ProvidePlugin({
       _: "lodash"
     })
   ]

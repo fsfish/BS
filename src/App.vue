@@ -183,20 +183,24 @@ export default {
     },
     //登录
     login() {
-
-      let storage = window.localStorage;
-      this.get('paylogin', {
-        params: {
-          username: storage.username,
-          password: storage.password,
-        }
-      }).then(data => {
-        this.user = this.copy(_.get(data, 'data', {}));
-        this.$set(this.user, data.data);
-        this.$store.dispatch("setUserMsg", _.get(data, 'data', {}));
-        this.$store.commit('toPrepare', data.data);
-
+      let promise = new Promise(resolve => {
+        let storage = window.localStorage;
+        this.get('paylogin', {
+          params: {
+            username: storage.username,
+            password: storage.password,
+          }
+        }).then(data => {
+          console.log(data)
+          this.user = this.copy(_.get(data, 'data', {}));
+          this.$set(this.user, data.data);
+          this.$store.dispatch("setUserMsg", _.get(data, 'data', {}));
+          if (data.httpCode == "OK") {
+            resolve(data.data);
+          }
+        })
       })
+      this.$store.commit('toPrepare', promise);
       //  this.get('paylogin', {params:{
       // username:'zhang',
       // password:'888888',

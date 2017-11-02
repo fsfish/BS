@@ -207,7 +207,8 @@ export default {
           params:{
             ...this.form,
             page:page-1,
-            pageSize:pageSize
+            pageSize:pageSize,
+            type:3
           }
          }).then(data => {
         this.other.count = _.get(data, 'data.count', 0);

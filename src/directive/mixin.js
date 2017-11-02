@@ -53,9 +53,10 @@ Vue.mixin({
     },
     //重置表单
     resetForm(formName, parameter) {
+      console.log(parameter)
       if (parameter) {
         if (typeof(this[parameter]) === 'function') {
-          // console.log(1)
+           console.log(1)
           this.$refs[formName].resetFields();
           this[parameter](1);
         }

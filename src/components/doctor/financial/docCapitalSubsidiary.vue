@@ -35,6 +35,7 @@
       <el-table-column label="消费种类" prop="orderName"></el-table-column>
        <el-table-column label="消费金额" prop="orderAmount">
           <template scope="scope">
+          <span>{{scope.row.finaType==0?'+':'-'}}</span>
             <span>{{ toThousands(scope.row.orderAmount)}}元</span>
           </template>
         </el-table-column>

@@ -28,6 +28,9 @@ paygetUserFullnames:title+'pay/getUserFullnames',//获取医生下拉框
 
 paygetCurrencyBalance:title+'pay/getCurrencyBalance',//获取账户余额
 
+
+paygetAssHospitals:title+'pay/getAssHospitals',//根据地区获取可协助的医院
+
 }
 
 

@@ -24,25 +24,26 @@
       <el-tabs v-model="activeName">
         <el-tab-pane label="最近交易记录" name="first">
           <el-table :data="array.tableData" border height="100">
-            <el-table-column label="账户名称" prop="accountName"  show-overflow-tooltip></el-table-column>
-            <el-table-column label="账户类型" prop="name">
+            <el-table-column label="账户名称" prop="accountName"  show-overflow-tooltip width="180"></el-table-column>
+            <el-table-column label="账户类型" prop="name" width="120" >
               <template scope="scope">
                 <span>{{['个人','医院'][scope.row.accountType]}}</span>
               </template>
             </el-table-column>
-            <el-table-column label="消费人" prop="fullname"></el-table-column>
-            <el-table-column label="消费种类" prop="orderName"  show-overflow-tooltip></el-table-column>
-            <el-table-column label="消费金额" prop="orderAmount">
+            <el-table-column label="消费人" prop="fullname" width="120" show-overflow-tooltip ></el-table-column>
+            <el-table-column label="消费种类" prop="orderName"  show-overflow-tooltip width="350"></el-table-column>
+            <el-table-column label="消费金额" prop="orderAmount" width="150">
               <template scope="scope">
+              <span>{{scope.row.finaType==0?'+':'-'}}</span>
                 <span>{{toThousands(scope.row.orderAmount)}}元</span>
               </template>
             </el-table-column>
-            <el-table-column label="消费时间" prop="startTime"  show-overflow-tooltip>
+            <el-table-column label="消费时间" prop="startTime"  show-overflow-tooltip width="250">
               <template scope="scope">
                 <span>{{formatDate(scope.row.startTime)}}</span>
               </template>
             </el-table-column>
-            <el-table-column label="账户余额" prop="currentBalanceA">
+            <el-table-column label="账户余额" prop="currentBalanceA" >
               <template scope="scope">
                 <span>{{toThousands(scope.row.currentBalanceA+scope.row.currentBalanceB)}}元</span>
               </template>
@@ -84,11 +85,12 @@ export default {
   },
   created() {
   this.loginState.then(data=>{
+    console.log('123sxt')
+    console.log(data)
     this.$set(this.other, 'user', data.fullname);
     this.accountBalance();
     this.queryData(1);
   })
-    
   },
   methods: {
     handleClick(tab, event) {
@@ -97,9 +99,7 @@ export default {
     //获取账户余额
     accountBalance() {
       this.get('paygetCurrencyBalance').then((data) => {
-        console.log(data.data)
-        console.log(data.currentBalanceA)
-        this.other.price = parseInt(data.data.currentBalanceA) + parseInt(data.data.currentBalanceB);
+        this.other.price =data.data.currentBalanceB;
       })
     },
     //获取数据

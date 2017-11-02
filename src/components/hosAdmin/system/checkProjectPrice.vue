@@ -40,14 +40,19 @@
           </el-table-column>
           <el-table-column label="检查类型" prop="examineType"></el-table-column>
           <el-table-column label="检查项目" prop="examineItem"></el-table-column>
-            <el-table-column label="书写定价" width="150">
+            <el-table-column label="书写定价" >
             <template scope="scope">
-              <span>{{scope.row.serviceWritePrice}}元</span>
+              <span>{{scope.row.writePrice}}元</span>
             </template>
           </el-table-column>
-          <el-table-column label="审核定价" width="150">
+          <el-table-column label="审核定价">
             <template scope="scope">
-              <span>{{scope.row.serviceAuditPrice}}元</span>
+              <span>{{scope.row.auditPrice}}元</span>
+            </template>
+          </el-table-column>
+           <el-table-column label="引流定价">
+            <template scope="scope">
+              <span>{{scope.row.drainagePrice}}元</span>
             </template>
           </el-table-column>
       </el-table>
@@ -55,15 +60,18 @@
     <section class="create">
       <el-dialog @close="resetForm('navform')" :close-on-click-modal="false" :title="other.title" size="tiny" v-model="alert.new_info">
         <el-form class="false" :model="navform" :rules="other.rules" ref="navform" label-width="120px">
-            <el-form-item label="书写定价:" prop="serviceWritePrice">
-            <el-input type="number" placeholder="请输入书写定价(0~100元)" v-model="navform.serviceWritePrice">
+            <el-form-item label="书写定价:" prop="writePrice">
+            <el-input type="number" placeholder="请输入书写定价(0~100元)" v-model="navform.writePrice">
             </el-input>
           </el-form-item>
-          <el-form-item label="审核定价:" prop="serviceAuditPrice">
-            <el-input type="number"  placeholder="请输入审核定价(0~100元)" v-model="navform.serviceAuditPrice">
+          <el-form-item label="审核定价:" prop="auditPrice">
+            <el-input type="number"  placeholder="请输入审核定价(0~100元)" v-model="navform.auditPrice">
             </el-input>
           </el-form-item>
-          
+           <el-form-item label="引流定价:" prop="drainagePrice">
+            <el-input type="number"  placeholder="请输入引流定价(0~100元)" v-model="navform.drainagePrice">
+            </el-input>
+          </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button class="mlem false" :plain="true" type="primary" @click="alert.new_info=false">取 消</el-button>
@@ -102,7 +110,7 @@ export default {
         pageSize: 30,
         count: 0, //默认所有的检查项目的条数
         rules: {
-           serviceWritePrice: [{
+           writePrice: [{
             required: true,
             message: '请输入书写定价(0~1000元)',
             trigger: 'blur',
@@ -115,7 +123,7 @@ export default {
               }
             }
           }],
-          serviceAuditPrice: [{
+          auditPrice: [{
             required: true,
             message: '请输入审核定价(0~1000元)',
             trigger: 'blur',
@@ -127,6 +135,18 @@ export default {
               }
             }
           }],
+           drainagePrice: [{
+            required: true,
+            message: '请输入引流定价(0~1000元)',
+            trigger: 'blur',
+            validator: (rule, value, callback) => {
+              if (value == ''||parseInt(value)<0) {
+                callback(new Error());
+              } else {
+                callback();
+              }
+            }
+          }]
         },
       }
     }
@@ -210,8 +230,8 @@ export default {
   .create {
 
     .el-dialog {
-      height: 260px;
-      .pub_margintop(260px);
+      height: 300px;
+      .pub_margintop(300px);
       .el-select,
       .el-input {
         width: 300px;

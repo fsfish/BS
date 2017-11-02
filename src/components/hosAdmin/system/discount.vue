@@ -36,7 +36,7 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column label="院区名称" prop="hospitalName" width="300"></el-table-column>
+        <el-table-column label="院区名称" prop="assHospitalName" width="300"></el-table-column>
         <el-table-column label=""></el-table-column>
       </el-table>
     </section>
@@ -177,26 +177,34 @@ export default {
     },
     //获取所有服务类型
     getServiceType() {
-      this.get('paygetAllProcess').then(data => {
+      this.get('paygetAllProcess',{
+        params:{
+          nodeType:1
+        }
+      }).then(data => {
         console.log(data)
         this.array.serviceOption = _.get(data, 'data', []);
       })
     },
     //根据地区获取医院
     getHospital() {
-      this.get('paygetHospitals', {
-        params: {
-          postCode: _.last(this.form.postCode) || ''
-        }
+      this.post('paygetAssHospitals', {
+      
+          postCode: _.last(this.form.postCode) || '',
+          assHospitalID:'',
+      
       }).then(data => {
-        this.array.hostitalOption = _.get(data, 'data.data', []);
+        console.log(1)
+        console.log(data)
+        this.array.hostitalOption = _.get(data, 'data',[]);
+        console.log(this.array.hostitalOption)
       })
     },
     //双击编辑显示当前行内容
     showCurrow(val) {
       console.log(val);
 
-      this.other.hostitle = `编辑${val.hospitalName}`
+      this.other.hostitle = `编辑${val.assHospitalName}`
       this.hosForm.targetID = val.id;
       this.navform.targetID = val.id;
       this.alert.createServe = true;
@@ -204,6 +212,7 @@ export default {
     },
     //获取所有折扣类型
     queryData() {
+      console.log(this.hosForm)
       this.get('paygetDiscountList', {
         params: {
           ...this.hosForm,
@@ -242,8 +251,8 @@ export default {
     },
     //删除折扣
     deleteInfo(item, index) {
-      // console.log(item)
-      this.$confirm(`是否确认删除${item.targetName}的${item.serviceNode}服务折扣?`, '提示', {
+      console.log(item)
+      this.$confirm(`是否确认删除${item.serviceNode}服务折扣?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

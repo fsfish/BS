@@ -44,16 +44,20 @@
       <el-dialog @close="resetForm('navform')" :close-on-click-modal="false" title="设置服务费" size="tiny" v-model="alert.new_info">
         <el-form class="false" :model="navform" :rules="other.rules" ref="navform" label-width="130px">
           <el-form-item label="平台服务费:" prop="servicePrice">
-            <el-input placeholder="请输入基础服务费(0~100元)" v-model="navform.servicePrice">
+            <el-input type="number" placeholder="请输入基础服务费(0~100元)" v-model="navform.servicePrice">
             </el-input>
           </el-form-item>
         
-          <el-form-item label="远程书写服务费:" prop="writePrice">
-            <el-input placeholder="请输入远程书写服务费(0~100元)" v-model="navform.writePrice">
+          <el-form-item label="远程书写服务费:" prop="serviceWritePrice">
+            <el-input type="number" placeholder="请输入远程书写服务费(0~100元)" v-model="navform.serviceWritePrice">
             </el-input>
           </el-form-item>
-          <el-form-item label="远程审核服务费:" prop="auditPrice">
-            <el-input placeholder="请输入远程审核服务费(0~100元)" v-model="navform.auditPrice">
+          <el-form-item label="远程审核服务费:" prop="serviceAuditPrice">
+            <el-input type="number" placeholder="请输入远程审核服务费(0~100元)" v-model="navform.serviceAuditPrice">
+            </el-input>
+          </el-form-item>
+          <el-form-item label="引流服务费:" prop="serviceDrainagePrice">
+            <el-input type="number" placeholder="请输入引流服务费(0~100元)" v-model="navform.serviceDrainagePrice">
             </el-input>
           </el-form-item>
         </el-form>
@@ -102,12 +106,17 @@
         
           <el-table-column label="远程书写服务费" width="150">
             <template scope="scope">
-              <span>{{scope.row.writePrice}}元</span>
+              <span>{{scope.row.serviceWritePrice}}元</span>
             </template>
           </el-table-column>
           <el-table-column label="远程审核服务费" width="150">
             <template scope="scope">
-              <span>{{scope.row.auditPrice}}元</span>
+              <span>{{scope.row.serviceAuditPrice}}元</span>
+            </template>
+          </el-table-column>
+           <el-table-column label="引流服务费" width="150">
+            <template scope="scope">
+              <span>{{scope.row.serviceDrainagePrice}}元</span>
             </template>
           </el-table-column>
         </el-table>
@@ -159,31 +168,43 @@ export default {
             message: '请输入平台服务费(0~100元)',
             trigger: 'blur',
             validator: (rule, value, callback) => {
-              if (value == '') {
+              if (value == ''||parseInt(value)<0) {
                 callback(new Error());
               } else {
                 callback();
               }
             }
           }],
-          writePrice: [{
+          serviceWritePrice: [{
             required: true,
             message: '请输入远程书写服务费(0~100元)',
             trigger: 'blur',
             validator: (rule, value, callback) => {
-              if (value == '') {
+              if (value == ''||parseInt(value)<0) {
                 callback(new Error());
               } else {
                 callback();
               }
             }
           }],
-         auditPrice: [{
+         serviceAuditPrice: [{
             required: true,
             message: '请输入远程审核服务费(0~100元)',
             trigger: 'blur',
             validator: (rule, value, callback) => {
-              if (value == '') {
+              if (value == ''||parseInt(value)<0) {
+                callback(new Error());
+              } else {
+                callback();
+              }
+            }
+          }],
+           serviceDrainagePrice: [{
+            required: true,
+            message: '请输入引流服务费(0~100元)',
+            trigger: 'blur',
+            validator: (rule, value, callback) => {
+              if (value == ''||parseInt(value)<0) {
                 callback(new Error());
               } else {
                 callback();
@@ -317,8 +338,8 @@ export default {
   .create {
 
     .el-dialog {
-      height: 330px;
-      .pub_margintop(330px);
+      height: 370px;
+      .pub_margintop(370px);
       .el-select,
       .el-input {
         width: 300px;

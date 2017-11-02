@@ -8,7 +8,7 @@ var title, localTitle;
 // export const localTitle='http://192.168.0.51:50050/INDEX.HTML?';
 // if (__DEV__) {
     title = 'http://192.168.1.68:8004/'; //测试服务器
-//     // title='/';       //测试服务器
+    // title='/';       //测试服务器
 	// title='http://192.168.1.68:8001/';       //测试服务器
 //     // localTitle = 'http://127.0.0.1:50050/INDEX.HTML?';
 // 	// title='http://192.168.0.188:8001/';   //王辉

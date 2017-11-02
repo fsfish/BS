@@ -81,7 +81,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="折扣率:" prop="discount">
-            <el-input placeholder="请输入折扣率(0.00~1.00)" v-model="navform.discount">
+            <el-input type="number" placeholder="请输入折扣率(0.00~1.00)" v-model="navform.discount">
             </el-input>
           </el-form-item>
         </el-form>
@@ -179,7 +179,11 @@ export default {
     },
     //获取所有服务类型
     getServiceType() {
-      this.get('paygetAllProcess').then(data => {
+      this.get('paygetAllProcess',{
+        params:{
+          nodeType:0
+        }
+      }).then(data => {
         console.log(data)
         this.array.serviceOption = _.get(data, 'data', []);
       })

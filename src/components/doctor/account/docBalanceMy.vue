@@ -33,6 +33,7 @@
             <el-table-column label="消费种类" prop="orderName"></el-table-column>
             <el-table-column label="消费金额" prop="orderAmount">
               <template scope="scope">
+              <span>{{scope.row.finaType==0?'+':'-'}}</span>
                 <span>{{ toThousands(scope.row.orderAmount)}}元</span>
               </template>
             </el-table-column>
@@ -94,9 +95,9 @@ export default {
      //获取账户余额
     accountBalance() {
       this.get('paygetCurrencyBalance').then((data) => {
-        this.other.price = parseInt(data.data.currentBalanceA) + parseInt(data.data.currentBalanceB);
-        this.other.currentBalanceA=parseInt(data.data.currentBalanceA);
-        this.other.currentBalanceB=parseInt(data.data.currentBalanceB);
+        this.other.price = data.data.currentBalanceA + data.data.currentBalanceB;
+        this.other.currentBalanceA=data.data.currentBalanceA;
+        this.other.currentBalanceB=data.data.currentBalanceB;
       })
     },
     //获取数据
