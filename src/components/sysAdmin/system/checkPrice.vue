@@ -53,7 +53,7 @@
             </el-input>
           </el-form-item>
           <el-form-item label="远程审核服务费:" prop="serviceAuditPrice">
-            <el-input type="number" placeholder="请输入远程审核服务费(0~100元)" v-model="navform.serviceAuditPrice">
+            <el-input type="number" placeholder="请输入远程审核服务费(0~100元)" v-model.number="navform.serviceAuditPrice">
             </el-input>
           </el-form-item>
           <el-form-item label="引流服务费:" prop="serviceDrainagePrice">
@@ -168,7 +168,7 @@ export default {
             message: '请输入平台服务费(0~100元)',
             trigger: 'blur',
             validator: (rule, value, callback) => {
-              if (value == ''||parseInt(value)<0) {
+             if (value ===''||value<0) {
                 callback(new Error());
               } else {
                 callback();
@@ -180,7 +180,7 @@ export default {
             message: '请输入远程书写服务费(0~100元)',
             trigger: 'blur',
             validator: (rule, value, callback) => {
-              if (value == ''||parseInt(value)<0) {
+              if (value ===''||value<0) {
                 callback(new Error());
               } else {
                 callback();
@@ -192,9 +192,9 @@ export default {
             message: '请输入远程审核服务费(0~100元)',
             trigger: 'blur',
             validator: (rule, value, callback) => {
-              if (value == ''||parseInt(value)<0) {
+              if (value ===''||value<0) {
                 callback(new Error());
-              } else {
+              }else {
                 callback();
               }
             }
@@ -204,7 +204,7 @@ export default {
             message: '请输入引流服务费(0~100元)',
             trigger: 'blur',
             validator: (rule, value, callback) => {
-              if (value == ''||parseInt(value)<0) {
+             if (value ===''||value<0) {
                 callback(new Error());
               } else {
                 callback();
@@ -333,6 +333,9 @@ export default {
     flex-direction: column;
     .el-table {
       flex-grow: 1;
+       .cell{
+      text-align: center;
+    }
     }
   }
   .create {
@@ -393,6 +396,9 @@ export default {
         }
         .el-table {
           flex-grow: 1;
+           .cell{
+      text-align: center;
+    }
         }
       }
       .dialog-footer {

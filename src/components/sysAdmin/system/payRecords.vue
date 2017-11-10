@@ -153,7 +153,7 @@ export default {
                     message: '请输入充值金额',
                     trigger: 'change',
                     validator: (rule, value, callback) => {
-                        if (value == ''||parseInt(value)<0) {
+                       if (value ===''||value<0) {
                             callback(new Error());
                         } else {
                             callback();

@@ -147,7 +147,7 @@ export default {
                     message: '请输入折扣率(0.00~1.00)',
                     trigger: 'change',
                     validator: (rule, value, callback) => {
-                        if (value == '') {
+                        if (value === '') {
                             callback(new Error());
                         } else {
                             callback();
@@ -288,6 +288,9 @@ export default {
     flex-direction: column;
     .el-table {
       flex-grow: 1;
+       .cell{
+      text-align: center;
+    }
     }
   }
   .create {
@@ -346,6 +349,9 @@ export default {
         }
         .el-table {
           flex-grow: 1;
+           .cell{
+      text-align: center;
+    }
         }
       }
       .dialog-footer {

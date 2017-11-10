@@ -52,16 +52,16 @@
       <el-dialog @close="resetForm('navform')" :close-on-click-modal="false" title="设置服务费" size="tiny" v-model="alert.new_info">
         <el-form class="false" :model="navform" :rules="other.rules" ref="navform" label-width="130px">
           <el-form-item label="平台服务费:" prop="servicePrice">
-            <el-input placeholder="请输入基础服务费(0~100元)" v-model="navform.servicePrice">
+            <el-input type="number"  placeholder="请输入基础服务费(0~100元)" v-model="navform.servicePrice">
             </el-input>
           </el-form-item>
         
           <el-form-item label="远程书写服务费:" prop="writePrice">
-            <el-input placeholder="请输入远程书写服务费(0~100元)" v-model="navform.writePrice">
+            <el-input type="number"  placeholder="请输入远程书写服务费(0~100元)" v-model="navform.writePrice">
             </el-input>
           </el-form-item>
           <el-form-item label="远程审核服务费:" prop="auditPrice">
-            <el-input placeholder="请输入远程审核服务费(0~100元)" v-model="navform.auditPrice">
+            <el-input type="number"  placeholder="请输入远程审核服务费(0~100元)" v-model="navform.auditPrice">
             </el-input>
           </el-form-item>
         </el-form>
@@ -154,7 +154,7 @@ export default {
             message: '请输入平台服务费(0~100元)',
             trigger: 'blur',
             validator: (rule, value, callback) => {
-              if (value == '') {
+              if (value ===''||value<0) {
                 callback(new Error());
               } else {
                 callback();
@@ -166,7 +166,7 @@ export default {
             message: '请输入远程书写服务费(0~100元)',
             trigger: 'blur',
             validator: (rule, value, callback) => {
-              if (value == '') {
+              if (value ===''||value<0) {
                 callback(new Error());
               } else {
                 callback();
@@ -178,7 +178,7 @@ export default {
             message: '请输入远程审核服务费(0~100元)',
             trigger: 'blur',
             validator: (rule, value, callback) => {
-              if (value == '') {
+              if (value ===''||value<0) {
                 callback(new Error());
               } else {
                 callback();

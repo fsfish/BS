@@ -179,6 +179,9 @@ export default {
     flex-direction: column;
     .el-table {
       flex-grow: 1;
+       .cell{
+      text-align: center;
+    }
     }
   }
 }

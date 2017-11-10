@@ -37,7 +37,8 @@ $(window).resize(function() {
 var win = window.innerWidth >= 1024 ? window.innerWidth : 1024;
 document.getElementsByTagName('html')[0].style.fontSize = win / 10.24 + 'px';
 
-
+//关闭全局的console
+console.log = function () {};
 
 Vue.config.productionTip = false;
 

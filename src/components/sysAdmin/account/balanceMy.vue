@@ -21,8 +21,9 @@
       </div>
     </section>
     <section class='main'>
-      <el-tabs v-model="activeName">
-        <el-tab-pane label="最近交易记录" name="first">
+    <el-button type="primary" class="btn" @click='queryData(1)'>刷新</el-button>
+      <el-tabs v-model="activeName" @tab-click="queryData(1)">
+        <el-tab-pane label="最近交易记录" name="4">
           <el-table :data="array.tableData" border height="100">
             <el-table-column label="账户名称" prop="accountName"  show-overflow-tooltip width="180"></el-table-column>
             <el-table-column label="账户类型" prop="name" width="120" >
@@ -34,7 +35,7 @@
             <el-table-column label="消费种类" prop="orderName"  show-overflow-tooltip width="350"></el-table-column>
             <el-table-column label="消费金额" prop="orderAmount" width="150">
               <template scope="scope">
-              <span>{{scope.row.finaType==0?'+':'-'}}</span>
+              <!-- <span>{{scope.row.finaType==0?'+':'-'}}</span> -->
                 <span>{{toThousands(scope.row.orderAmount)}}元</span>
               </template>
             </el-table-column>
@@ -43,7 +44,35 @@
                 <span>{{formatDate(scope.row.startTime)}}</span>
               </template>
             </el-table-column>
-            <el-table-column label="账户余额" prop="currentBalanceA" >
+            <el-table-column label="账户余额" prop="currentBalanceA" width="150">
+              <template scope="scope">
+                <span>{{toThousands(scope.row.currentBalanceA+scope.row.currentBalanceB)}}元</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="冻结交易记录" name="5">
+          <el-table :data="array.tableData" border height="100">
+            <el-table-column label="账户名称" prop="accountName"  show-overflow-tooltip width="180"></el-table-column>
+            <el-table-column label="账户类型" prop="name" width="120" >
+              <template scope="scope">
+                <span>{{['个人','医院'][scope.row.accountType]}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="消费人" prop="fullname" width="120" show-overflow-tooltip ></el-table-column>
+            <el-table-column label="消费种类" prop="orderName"  show-overflow-tooltip width="350"></el-table-column>
+            <el-table-column label="消费金额" prop="orderAmount" width="150">
+              <template scope="scope">
+              <!-- <span>{{scope.row.finaType==0?'+':'-'}}</span> -->
+                <span>{{toThousands(scope.row.orderAmount)}}元</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="消费时间" prop="startTime"  show-overflow-tooltip width="250">
+              <template scope="scope">
+                <span>{{formatDate(scope.row.startTime)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="账户余额" prop="currentBalanceA" width="150">
               <template scope="scope">
                 <span>{{toThousands(scope.row.currentBalanceA+scope.row.currentBalanceB)}}元</span>
               </template>
@@ -63,7 +92,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      activeName: 'first',
+      activeName: '4',
       array: {
         tableData: []
       },
@@ -93,9 +122,6 @@ export default {
   })
   },
   methods: {
-    handleClick(tab, event) {
-      console.log(tab, event);
-    },
     //获取账户余额
     accountBalance() {
       this.get('paygetCurrencyBalance').then((data) => {
@@ -103,11 +129,12 @@ export default {
       })
     },
     //获取数据
-    queryData(page, pageSize = this.other.pageSize) {
+    queryData(page, pageSize = this.other.pageSize,type=this.activeName) {
       this.get('paygetAccountInfoList', {
         params: {
           page: page - 1,
-          pageSize: pageSize
+          pageSize: pageSize,
+          type:type
         }
       }).then(data => {
         console.log(data)
@@ -171,10 +198,20 @@ export default {
     }
   }
   .main {
+    
     width: 100%;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    .cell{
+      text-align: center;
+    }
+    position:relative;
+    .btn{
+      position: absolute;
+      right: 1em;
+      top: 3px;
+    }
     .el-tabs {
       flex-grow: 1;
       width: 100%;

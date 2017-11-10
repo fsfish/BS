@@ -4,7 +4,7 @@
     <header class="this_header">
       <div class="left">
         <div class="logo"></div>
-        <div class="txt">计费平台</div>
+        <div class="txt">岱江Saas结算服务平台</div>
       </div>
       <div class="elmenu">
         <el-dropdown trigger="click">
@@ -47,13 +47,16 @@
             <el-menu-item index="/payRecords">
               <span slot="title">医院充值记录</span>
             </el-menu-item>
-            <el-menu-item index="/params">
+           <!--  <el-menu-item index="/params">
               <span slot="title">系统参数</span>
             </el-menu-item>
             <el-menu-item index="/dataDictionary">
               <span slot="title">数据字典</span>
-            </el-menu-item>
+            </el-menu-item> -->
           </el-submenu>
+        </el-menu>
+        <!-- 系统财务管理员 -->
+        <el-menu :router="true" :unique-opened="true" class="el-menu-vertical-demo" @open="handleOpen" :collapse="isCollapse" v-if="user.category==4">
           <el-submenu index="2">
             <template slot="title">
               <i class="icon iconfont icon-caiwujichushezhi"></i>
@@ -281,10 +284,11 @@ export default {
         margin-left: 18px;
       }
       .logo {
-        width: 60px;
-        height: 60px;
+        width: 54px;
+        height: 54px;
         background: url('./assets/images/djlogo.png');
         background-size: 100%;
+        border-radius: 50%;
       }
     }
     .elmenu {

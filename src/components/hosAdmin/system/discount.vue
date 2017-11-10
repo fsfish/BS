@@ -194,10 +194,10 @@ export default {
           assHospitalID:'',
       
       }).then(data => {
-        console.log(1)
-        console.log(data)
+        // console.log(1)
+        // console.log(data)
         this.array.hostitalOption = _.get(data, 'data',[]);
-        console.log(this.array.hostitalOption)
+        // console.log(this.array.hostitalOption)
       })
     },
     //双击编辑显示当前行内容
@@ -205,14 +205,14 @@ export default {
       console.log(val);
 
       this.other.hostitle = `编辑${val.assHospitalName}`
-      this.hosForm.targetID = val.id;
-      this.navform.targetID = val.id;
+      this.hosForm.targetID = val.assHospitalID;
+      this.navform.targetID = val.assHospitalID;
       this.alert.createServe = true;
       this.queryData();
     },
     //获取所有折扣类型
     queryData() {
-      console.log(this.hosForm)
+      // console.log(this.hosForm)
       this.get('paygetDiscountList', {
         params: {
           ...this.hosForm,

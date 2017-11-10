@@ -116,7 +116,7 @@ export default {
             trigger: 'blur',
             validator: (rule, value, callback) => {
               // console.log(typeof(parseInt(value)))
-              if (value === ''||parseInt(value)<0) {
+             if (value ===''||value<0) {
                 callback(new Error());
               } else {
                 callback();
@@ -128,7 +128,7 @@ export default {
             message: '请输入审核定价(0~1000元)',
             trigger: 'blur',
             validator: (rule, value, callback) => {
-              if (value == ''||parseInt(value)<0) {
+             if (value ===''||value<0) {
                 callback(new Error());
               } else {
                 callback();
@@ -140,7 +140,7 @@ export default {
             message: '请输入引流定价(0~1000元)',
             trigger: 'blur',
             validator: (rule, value, callback) => {
-              if (value == ''||parseInt(value)<0) {
+             if (value ===''||value<0) {
                 callback(new Error());
               } else {
                 callback();

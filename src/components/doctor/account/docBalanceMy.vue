@@ -33,7 +33,7 @@
             <el-table-column label="消费种类" prop="orderName"></el-table-column>
             <el-table-column label="消费金额" prop="orderAmount">
               <template scope="scope">
-              <span>{{scope.row.finaType==0?'+':'-'}}</span>
+                <span>{{scope.row.finaType==0?'+':'-'}}</span>
                 <span>{{ toThousands(scope.row.orderAmount)}}元</span>
               </template>
             </el-table-column>
@@ -72,40 +72,40 @@ export default {
         pageSize: 20,
         count: 0, //默认所有的检查项目的条数
         price: 0,
-        currentBalanceA:0,//金币
-        currentBalanceB:0,//银币
+        currentBalanceA: 0, //金币
+        currentBalanceB: 0, //银币
       }
     }
   },
   computed: {
-      ...mapState([
+    ...mapState([
       'pageSizeArr',
       'userMsg',
       'loginState'
     ])
   },
   created() {
-     this.loginState.then(data=>{
-    this.$set(this.other, 'user', this.userMsg.fullname);
-    this.accountBalance();
-    this.queryData(1);
-  })
+    this.loginState.then(data => {
+      this.$set(this.other, 'user', this.userMsg.fullname);
+      this.accountBalance();
+      this.queryData(1);
+    })
   },
   methods: {
-     //获取账户余额
+    //获取账户余额
     accountBalance() {
       this.get('paygetCurrencyBalance').then((data) => {
         this.other.price = data.data.currentBalanceA + data.data.currentBalanceB;
-        this.other.currentBalanceA=data.data.currentBalanceA;
-        this.other.currentBalanceB=data.data.currentBalanceB;
+        this.other.currentBalanceA = data.data.currentBalanceA;
+        this.other.currentBalanceB = data.data.currentBalanceB;
       })
     },
     //获取数据
     queryData(page, pageSize = this.other.pageSize) {
       this.get('paygetAccountInfoList', {
         params: {
-          hospitalID:this.userMsg.hospitalID,
-          fullname:this.userMsg.fullname,
+          hospitalID: this.userMsg.hospitalID,
+          fullname: this.userMsg.fullname,
           page: page - 1,
           pageSize: pageSize
         }
@@ -120,7 +120,7 @@ export default {
 
 </script>
 <style lang='less'>
-.docBalanceMy {
+      .docBalanceMy {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -145,7 +145,7 @@ export default {
       h1 {
         color: #8492A6;
         font-size: 1.5em;
-        span{
+        span {
           font-size: 1em;
         }
       }
@@ -214,6 +214,12 @@ export default {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    position: relative;
+    .btn {
+      position: absolute;
+      right: 1em;
+      top: 3px;
+    }
     .el-tabs {
       flex-grow: 1;
       width: 100%;
@@ -232,7 +238,7 @@ export default {
     .el-table {
       width: 100%;
       flex-grow: 1;
-    }
+  }
   }
 }
 
