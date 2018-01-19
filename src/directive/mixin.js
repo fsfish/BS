@@ -10,11 +10,7 @@ Vue.use(VueAxios, axios);
 Vue.mixin({
   data() {
     return {
-      timeType: ['登记时间', '预检时间', '摄片时间', 'QA时间'],
-      noType: ['病历号', '患者编号', '检查号', '住院号', '床号'],
-      sex: ['不详', '男', '女'],
-      //控制操作行
-      displayControl: null
+    
     };
   },
   methods: {
@@ -113,56 +109,7 @@ Vue.mixin({
       }
       return num[0].replace(/(\d)(?=(?:\d{3})+$)/g, '$1,')
     },
-    //获取运维数据字典
-    get_plaDataDic(name, value) {
-      this.$http.get(location.queryPlaDataDic, {
-        params: {
-          dataDicCode: name
-        }
-      }).then(data => {
-        data = data.body;
-        this[value] = data.data;
-      });
-    },
-    //获取系统数据字典
-    getSysDataDicValue(name, value, ParentID) {
-      this.$http.get(location.getSysDataDicValue, {
-        params: {
-          systemID: this.identifying,
-          hospitalID: this.userMsg.hospitalID,
-          forTpye: 1,
-          depDataDicParentID: ParentID,
-          depTypeCode: name
-        }
-      }).then(data => {
-        data = data.body;
-        this[value] = data.data.data;
-        if (name === 'registerNotice') {
-          console.log(this[value]);
-        }
-        this[value].forEach((el) => {
-          el.value = el.depDataDicValueName;
-        });
-      });
-    },
-    //获取数据字典--其他--诊断工作站多多园区
-    getDataDicValues(name, value, Parent, hospitalID) {
-      this.$http.get(location.getDataDicValues, {
-        params: {
-          systemID: this.identifying,
-          hospitalID: hospitalID || this.userMsg.hospitalID,
-          forTpye: 1,
-          depTypeCode: name,
-          depDataDicParent: Parent
-        }
-      }).then(data => {
-        data = data.body;
-        this[value] = data.data.data;
-        // this[value].forEach((el, index) => {
-        //     el.value = el.depDataDicValueName;
-        // })
-      });
-    },
+   
     // 将时间戳转换成 yyyy-mm-dd形式
     formatDate(time){
      return  new Date(time).toLocaleString(); 
@@ -176,19 +123,19 @@ Vue.mixin({
       }
     },
    
-    //表格就诊类别变色
-    row_style(row) {
-      return { color: row.fontColor };
-    },
-    //显示组件
-    showComponents(name, item) {
-      this.$refs[name].$emit('start', this.copy(item));
-    },
-    showControl(row, column, ) {
-      if (column.label == '操作' || column.label == undefined) {
-        this.displayControl = row;
-      }
-    },
+    // //表格就诊类别变色
+    // row_style(row) {
+    //   return { color: row.fontColor };
+    // },
+    // //显示组件
+    // showComponents(name, item) {
+    //   this.$refs[name].$emit('start', this.copy(item));
+    // },
+    // showControl(row, column, ) {
+    //   if (column.label == '操作' || column.label == undefined) {
+    //     this.displayControl = row;
+    //   }
+    // },
     //get请求
     get(url, canObject) {
       return axios(location[url], canObject);

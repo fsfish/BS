@@ -2,7 +2,6 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import App from './App';
-import login from './login';
 import router from './router/router.js';
 import VueJsonp from 'vue-jsonp';
 import store from './vuex/store.js';
@@ -16,8 +15,7 @@ import './assets/css/globel.css';
 import './assets/font/iconfont.css';
 import './request';
 // import './assets/css/element.less';
-import VueParticles from 'vue-particles';
-Vue.use(VueParticles);
+
 
 Vue.use(ElementUI);
 Vue.use(VueJsonp);

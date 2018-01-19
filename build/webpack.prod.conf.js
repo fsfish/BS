@@ -29,12 +29,14 @@ var webpackConfig = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': env
     }),
-    // new webpack.optimize.UglifyJsPlugin({
-    //   compress: {
-    //     warnings: false
-    //   },
-    //   sourceMap: true
-    // }),
+    new webpack.optimize.UglifyJsPlugin({
+      comments: false,        //去掉注释
+      compress: {
+        warnings: false,
+        drop_console: true
+      },
+      sourceMap: true
+    }),
     // extract css into its own file
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css')
@@ -79,8 +81,8 @@ var webpackConfig = merge(baseWebpackConfig, {
         // https://github.com/kangax/html-minifier#options-quick-reference
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-      // chunks: ['common','manifest','vendor','login'],
-      excludeChunks: ['app'],
+      chunks: ['common','manifest','vendor','login'],
+      // excludeChunks: ['app'],
       chunksSortMode: 'dependency',
     }),
     // keep module.id stable when vender modules does not change
@@ -130,7 +132,7 @@ if (config.build.productionGzip) {
         config.build.productionGzipExtensions.join('|') +
         ')$'
       ),
-      threshold: 10240,
+      threshold: 0,
       minRatio: 0.8
     })
   )

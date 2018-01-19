@@ -6,7 +6,8 @@
       <section class="content">
         <div class="left">
           <p class="title">欢迎使用</p>
-          <p class="title">岱江计费平台</p>
+          <p class="title">岱江结算服务平台</p>
+          <p class="welcome"> 技术支持400-0571-121 </p>
           <p class="welcome">
             Welcome to Daijiang Billing System
             <br>
@@ -67,8 +68,8 @@ export default {
   },
   created() {
     var storage = window.localStorage;
-    if(storage["username"]){
-      this.form.username= storage["username"];
+    if (storage["username"]) {
+      this.form.username = storage["username"];
     }
   },
   methods: {
@@ -81,7 +82,7 @@ export default {
             message: data.message,
             type: 'success'
           });
-          this.$store.dispatch("setUserMsg", _.get(data, 'data', {}));
+          // this.$store.dispatch("setUserMsg", _.get(data, 'data', {}));
           if (!window.localStorage) {
             alert("浏览器需要支持本地存储");
             return false;
@@ -89,7 +90,7 @@ export default {
             var storage = window.localStorage;
             storage["username"] = this.form.username;
             storage["password"] = this.form.password;
-            storage["category"] =data.data.category;
+            storage["category"] = data.data.category;
           }
           setTimeout(() => {
             self.location = 'index.html';
@@ -117,7 +118,7 @@ export default {
     box-sizing: border-box;
     height: 100%;
     width: 100%;
-    background: rgb(113, 207, 172);
+    background: -webkit-gradient(linear, 20% 100%, 100% 0, from(#46c6ac), to(#8cd4ac));
     position: absolute;
   }
   .content {

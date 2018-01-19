@@ -44,10 +44,7 @@
             <el-menu-item index="/discountIsSet">
               <span slot="title">医院折扣设置</span>
             </el-menu-item>
-            <el-menu-item index="/payRecords">
-              <span slot="title">医院充值记录</span>
-            </el-menu-item>
-           <!--  <el-menu-item index="/params">
+            <!--  <el-menu-item index="/params">
               <span slot="title">系统参数</span>
             </el-menu-item>
             <el-menu-item index="/dataDictionary">
@@ -57,6 +54,15 @@
         </el-menu>
         <!-- 系统财务管理员 -->
         <el-menu :router="true" :unique-opened="true" class="el-menu-vertical-demo" @open="handleOpen" :collapse="isCollapse" v-if="user.category==4">
+          <el-submenu index="1">
+            <template slot="title">
+              <i class="icon iconfont icon-set"></i>
+              <span slot="title">系统设置</span>
+            </template>
+            <el-menu-item index="/payRecords">
+              <span slot="title">医院充值记录</span>
+            </el-menu-item>
+          </el-submenu>
           <el-submenu index="2">
             <template slot="title">
               <i class="icon iconfont icon-caiwujichushezhi"></i>
@@ -139,10 +145,10 @@
       <el-dialog @close="resetForm('navform')" title="修改密码" size="tiny" v-model="alert.resetPass">
         <el-form class="false" :model="navform" ref="navform" label-width="87px">
           <el-form-item label="旧密码:" prop="oldPassword">
-            <el-input placeholder="请输入旧密码" v-model="navform.oldPassword"></el-input>
+            <el-input type="password" placeholder="请输入旧密码" v-model="navform.oldPassword"></el-input>
           </el-form-item>
           <el-form-item label="新密码:" prop="newPassword">
-            <el-input placeholder="请输入新密码" v-model="navform.newPassword"></el-input>
+            <el-input type="password" placeholder="请输入新密码" v-model="navform.newPassword"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">

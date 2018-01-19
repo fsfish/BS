@@ -122,6 +122,9 @@ export default {
         this.array.tableData = _.get(data, 'data.data', []);
       })
     },
+    aa(qq){
+      console.log(11)
+    }
   }
 }
 
@@ -226,6 +229,7 @@ export default {
       position: absolute;
       right: 1em;
       top: 3px;
+      z-index:10000;
     }
     .el-tabs {
       flex-grow: 1;
